@@ -120,7 +120,7 @@ negocios_barras = dfs["TOTAL CARTERA_resumen"]["NEGOCIO"].unique()
 negocio_barras = st.selectbox("Selecciona el negocio para el gráfico de barras y línea:", negocios_barras)
 plazo_meses_barras = st.selectbox("Selecciona el plazo (en meses) para el gráfico de barras y línea:", options=["Todos"] + list(range(1, 25)), index=1)
 # Selector de métrica para el eje Y del gráfico de barras
-eje_y_barras = st.selectbox("Selecciona la métrica para el Eje Y en el gráfico de barras:", ["MARGEN", "TASA ACTIVA", "RRR (con margen)"])
+eje_y_barras = st.selectbox("Selecciona la métrica para el Eje Y en el gráfico de barras:", ["MARGEN", "TASA ACTIVA PONDERADA", "RRR (con margen)", "RRR"])
 
 # Mostrar gráfico de barras y línea
 
