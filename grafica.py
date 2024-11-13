@@ -83,7 +83,7 @@ negocios_disp = dfs["TOTAL CARTERA_resumen"]["NEGOCIO"].unique()
 negocio_disp = st.selectbox("Selecciona el negocio para el gráfico de dispersión:", negocios_disp)
 # Obtener los plazos únicos disponibles en los datos
 # Selector de plazo en meses con opción de "Todos"
-plazo_meses_opcion = st.selectbox("Selecciona el plazo (en meses) para el gráfico de dispersión:",
+plazo_meses_disp = st.selectbox("Selecciona el plazo (en meses) para el gráfico de dispersión:",
                                   options=["Todos"] + list(range(1, 25)),
                                   index=1)
 columnas_numericas = pd.concat(dfs.values(), ignore_index=True).select_dtypes(include=['float64', 'int64']).columns
