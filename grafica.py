@@ -89,6 +89,7 @@ st.header("Gráfico de Dispersión")
 hojas_seleccionadas_disp = st.multiselect("Selecciona las hojas para el gráfico de dispersión:", list(dfs.keys()), default=["TOTAL CARTERA_resumen"])
 negocios_disp = dfs["TOTAL CARTERA_resumen"]["NEGOCIO"].unique()
 negocio_disp = st.selectbox("Selecciona el negocio para el gráfico de dispersión:", negocios_disp)
+
 # Obtener los plazos únicos disponibles en los datos
 # Selector de plazo en meses con opción de "Todos"
 # Cambia el slider por un selectbox que incluya la opción "Todos los periodos"
@@ -110,9 +111,12 @@ df_barras = dfs[hoja_seleccionada_barras]
 negocios_barras = dfs["TOTAL CARTERA_resumen"]["NEGOCIO"].unique()
 negocio_barras = st.selectbox("Selecciona el negocio para el gráfico de barras y línea:", negocios_barras)
 plazo_meses_barras = st.selectbox("Selecciona el plazo (en meses) para el gráfico de barras y línea:", options=["Todos"] + list(range(1, 25)), index=1)
+# Selector de métrica para el eje Y del gráfico de barras
+eje_y_barras = st.selectbox("Selecciona la métrica para el Eje Y en el gráfico de barras:", ["MARGEN", "TASA ACTIVA", "RRR (con margen)"])
 
+# Mostrar gráfico de barras y línea
 
 #df_barras = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas_barras], ignore_index=True)
 
 # Mostrar gráfico de barras y línea
-crear_grafico_barras_linea(df_barras, negocio_barras, plazo_meses_barras)
+crear_grafico_barras_linea(df_barras, negocio_barras, plazo_meses_barras, eje_y_barras)
