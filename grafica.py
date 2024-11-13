@@ -51,31 +51,43 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocio, plazo_meses, eje_x, 
     st.pyplot(fig)
 
 
-# Función para crear el gráfico combinado de barras y línea
 def crear_grafico_barras_linea(df, negocio, plazo_meses, eje_y):
-    # Filtra los datos por negocio y por plazo, o todos los periodos
+    # Verificar si la columna seleccionada para el eje Y existe en el DataFrame
+    if eje_y not in df.columns:
+        st.error(f"La columna '{eje_y}' no existe en el DataFrame.")
+        return
+    
+    # Filtrar los datos por negocio y plazo
     df_filtrado = df[df["NEGOCIO"] == negocio]
     if plazo_meses != "Todos":
         df_filtrado = df_filtrado[df_filtrado["PLAZO MESES"] == plazo_meses]
-    # Filtra por el umbral de CARTERA CAPITAL TOTAL
+
+    # Filtrar por umbral de CARTERA CAPITAL TOTAL
     df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] >= 100000]
-    
-    # Filtra las columnas necesarias para el gráfico y asegura que existen valores válidos en eje_y
+
+    # Asegurarse de que el eje Y y '%USGAAP 90 PONDERADO' no tengan valores nulos
     df_filtrado = df_filtrado.dropna(subset=[eje_y, "%USGAAP 90 PONDERADO"])
     df_filtrado = df_filtrado[(df_filtrado[eje_y] != 0)]
     df_filtrado = df_filtrado.sort_values(by=eje_y, ascending=False)
 
+    # Verificar si df_filtrado tiene datos después de los filtros
+    if df_filtrado.empty:
+        st.warning("No hay datos para mostrar después de aplicar los filtros.")
+        return
+
     fig, ax1 = plt.subplots(figsize=(15, 7), dpi=800)
     
-    # Crear gráfico de barras para eje_y seleccionado
+    # Crear gráfico de barras
     barplot = sns.barplot(
         x='DEPARTAMENTO / PRODUCTO', y=eje_y, data=df_filtrado,
         palette="coolwarm", dodge=False, edgecolor='black', ax=ax1
     )
-    
+
     # Añadir etiquetas de texto encima de las barras
     for i, row in enumerate(df_filtrado.itertuples()):
-        barplot.text(i, getattr(row, eje_y) + 0.02, f"{getattr(row, eje_y):.1f}", ha="center", fontweight='bold', fontsize=10)
+        value = getattr(row, eje_y, None)
+        if value is not None:
+            barplot.text(i, value + 0.02, f"{value:.1f}", ha="center", fontweight='bold', fontsize=10)
 
     ax1.set_xlabel("Departamento / Producto")
     ax1.set_ylabel(eje_y)
@@ -83,9 +95,10 @@ def crear_grafico_barras_linea(df, negocio, plazo_meses, eje_y):
     ax1.tick_params(axis='x', rotation=80, labelsize=10)
     ax1.grid(False)
 
-    # Crear gráfico de línea en el eje secundario
+    # Crear gráfico de línea en el eje secundario y limitar el rango de valores
     ax2 = ax1.twinx()
     ax2.plot(df_filtrado['DEPARTAMENTO / PRODUCTO'], df_filtrado['%USGAAP 90 PONDERADO'], color='red', marker='o', linewidth=2)
+    ax2.set_ylim(0, df_filtrado['%USGAAP 90 PONDERADO'].max() * 1.1)  # Ajustar el rango para no desbordar
     ax2.set_ylabel("%USGAAP 90 PONDERADO", color='red')
     fig.tight_layout()
     st.pyplot(fig)
