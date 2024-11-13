@@ -24,7 +24,7 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocio, plazo_meses, eje_x, 
     df_filtrado = df_filtrado.dropna(subset=[eje_x, eje_y])
     df_filtrado = df_filtrado[(df_filtrado[eje_x] != 0) & (df_filtrado[eje_y] != 0)]
 
-    fig, ax = plt.subplots(figsize=(15, 7),dpi=800)
+    fig, ax = plt.subplots(figsize=(15, 7),dpi=8)
     sns.scatterplot(
         x=df_filtrado[eje_x],
         y=df_filtrado[eje_y],
