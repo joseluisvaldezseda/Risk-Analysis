@@ -51,57 +51,36 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocio, plazo_meses, eje_x, 
     st.pyplot(fig)
 
 
-def crear_grafico_barras_linea(df, negocio, plazo_meses, eje_y):
-    # Verificar si la columna seleccionada para el eje Y existe en el DataFrame
-    if eje_y not in df.columns:
-        st.error(f"La columna '{eje_y}' no existe en el DataFrame.")
-        return
-    
-    # Filtrar los datos por negocio y plazo
+# Función para crear el gráfico combinado de barras y línea
+def crear_grafico_barras_linea(df, negocio, plazo_meses):
+    # Filtra los datos por negocio y por plazo, o todos los periodos
     df_filtrado = df[df["NEGOCIO"] == negocio]
     if plazo_meses != "Todos":
         df_filtrado = df_filtrado[df_filtrado["PLAZO MESES"] == plazo_meses]
-
-    # Filtrar por umbral de CARTERA CAPITAL TOTAL
+    # Filtra por el umbral de CARTERA CAPITAL TOTAL
     df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] >= 100000]
-
-    # Asegurarse de que el eje Y y '%USGAAP 90 PONDERADO' no tengan valores nulos
-    df_filtrado = df_filtrado.dropna(subset=[eje_y, "%USGAAP 90 PONDERADO"])
-    df_filtrado = df_filtrado[(df_filtrado[eje_y] != 0)]
-    df_filtrado = df_filtrado.sort_values(by=eje_y, ascending=False)
-
-    # Verificar si df_filtrado tiene datos después de los filtros
-    if df_filtrado.empty:
-        st.warning("No hay datos para mostrar después de aplicar los filtros.")
-        return
+    # Continua con el proceso de filtrado y generación del gráfico como antes
+    df_filtrado = df_filtrado.dropna(subset=["RRR", "RRR (con margen)", "%USGAAP 90 PONDERADO"])
+    df_filtrado = df_filtrado[(df_filtrado["RRR"] != 0) & (df_filtrado["RRR (con margen)"] != 0)]
+    df_filtrado = df_filtrado.sort_values(by='RRR', ascending=False)
 
     fig, ax1 = plt.subplots(figsize=(15, 7), dpi=800)
-    
-    # Crear gráfico de barras
-    barplot = sns.barplot(
-        x='DEPARTAMENTO / PRODUCTO', y=eje_y, data=df_filtrado,
-        palette="coolwarm", dodge=False, edgecolor='black', ax=ax1
-    )
-
-    # Añadir etiquetas de texto encima de las barras
+    barplot = sns.barplot(x='DEPARTAMENTO / PRODUCTO', y='RRR', data=df_filtrado, palette="coolwarm", dodge=False, edgecolor='black', ax=ax1)
     for i, row in enumerate(df_filtrado.itertuples()):
-        value = getattr(row, eje_y, None)
-        if value is not None:
-            barplot.text(i, value + 0.02, f"{value:.1f}", ha="center", fontweight='bold', fontsize=10)
+        barplot.text(i, row.RRR + 0.02, f"{row.RRR:.1f}x", ha="center", fontweight='bold', fontsize=10)
 
     ax1.set_xlabel("Departamento / Producto")
-    ax1.set_ylabel(eje_y)
+    ax1.set_ylabel("RRR")
     ax1.set_title(f"Gráfico de barras para {negocio} - {plazo_meses} meses" if plazo_meses != "Todos" else f"Gráfico de barras para {negocio} - Todos los periodos")
     ax1.tick_params(axis='x', rotation=80, labelsize=10)
     ax1.grid(False)
-
-    # Crear gráfico de línea en el eje secundario y limitar el rango de valores
+   
     ax2 = ax1.twinx()
     ax2.plot(df_filtrado['DEPARTAMENTO / PRODUCTO'], df_filtrado['%USGAAP 90 PONDERADO'], color='red', marker='o', linewidth=2)
-    ax2.set_ylim(0, df_filtrado['%USGAAP 90 PONDERADO'].max() * 1.1)  # Ajustar el rango para no desbordar
     ax2.set_ylabel("%USGAAP 90 PONDERADO", color='red')
     fig.tight_layout()
     st.pyplot(fig)
+    
 # Título de la aplicación
 st.title("Análisis de Cartera y Morosidad")
 
@@ -110,7 +89,6 @@ st.header("Gráfico de Dispersión")
 hojas_seleccionadas_disp = st.multiselect("Selecciona las hojas para el gráfico de dispersión:", list(dfs.keys()), default=["TOTAL CARTERA_resumen"])
 negocios_disp = dfs["TOTAL CARTERA_resumen"]["NEGOCIO"].unique()
 negocio_disp = st.selectbox("Selecciona el negocio para el gráfico de dispersión:", negocios_disp)
-
 # Obtener los plazos únicos disponibles en los datos
 # Selector de plazo en meses con opción de "Todos"
 # Cambia el slider por un selectbox que incluya la opción "Todos los periodos"
@@ -132,12 +110,9 @@ df_barras = dfs[hoja_seleccionada_barras]
 negocios_barras = dfs["TOTAL CARTERA_resumen"]["NEGOCIO"].unique()
 negocio_barras = st.selectbox("Selecciona el negocio para el gráfico de barras y línea:", negocios_barras)
 plazo_meses_barras = st.selectbox("Selecciona el plazo (en meses) para el gráfico de barras y línea:", options=["Todos"] + list(range(1, 25)), index=1)
-# Selector de métrica para el eje Y del gráfico de barras
-eje_y_barras = st.selectbox("Selecciona la métrica para el Eje Y en el gráfico de barras:", ["MARGEN", "TASA ACTIVA PONDERADA", "RRR (con margen)", "RRR"])
 
-# Mostrar gráfico de barras y línea
 
 #df_barras = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas_barras], ignore_index=True)
 
 # Mostrar gráfico de barras y línea
-crear_grafico_barras_linea(df_barras, negocio_barras, plazo_meses_barras, eje_y_barras)
+crear_grafico_barras_linea(df_barras, negocio_barras, plazo_meses_barras)
