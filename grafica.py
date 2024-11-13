@@ -23,13 +23,7 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocio, plazo_meses, eje_x, 
     df_filtrado = df_combined[(df_combined["NEGOCIO"] == negocio) & (df_combined["PLAZO MESES"] == plazo_meses)]
     df_filtrado = df_filtrado.dropna(subset=[eje_x, eje_y])
     df_filtrado = df_filtrado[(df_filtrado[eje_x] != 0) & (df_filtrado[eje_y] != 0)]
-    # Dentro de la función para filtrar datos:
-    if plazo_meses_opcion == "Todos":
-        df_filtrado = df_combined[df_combined["NEGOCIO"] == negocio]
-    else:
-        plazo_meses = int(plazo_meses_opcion)  # Convertir a entero
-        df_filtrado = df_combined[(df_combined["NEGOCIO"] == negocio) & (df_combined["PLAZO MESES"] == plazo_meses)]
-
+    
     fig, ax = plt.subplots(figsize=(15, 7),dpi=8000)
     sns.scatterplot(
         x=df_filtrado[eje_x],
@@ -83,9 +77,7 @@ negocios_disp = dfs["TOTAL CARTERA_resumen"]["NEGOCIO"].unique()
 negocio_disp = st.selectbox("Selecciona el negocio para el gráfico de dispersión:", negocios_disp)
 # Obtener los plazos únicos disponibles en los datos
 # Selector de plazo en meses con opción de "Todos"
-plazo_meses_disp = st.selectbox("Selecciona el plazo (en meses) para el gráfico de dispersión:",
-                                  options=["Todos"] + list(range(1, 25)),
-                                  index=1)
+plazo_meses_disp = st.slider("Selecciona el plazo (en meses) para el gráfico de dispersión:", 1, 24, 6) 
 columnas_numericas = pd.concat(dfs.values(), ignore_index=True).select_dtypes(include=['float64', 'int64']).columns
 eje_x = st.selectbox("Selecciona la variable para el Eje X en el gráfico de dispersión:", columnas_numericas)
 eje_y = st.selectbox("Selecciona la variable para el Eje Y en el gráfico de dispersión:", columnas_numericas)
