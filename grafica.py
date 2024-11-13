@@ -28,7 +28,7 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocio, plazo_meses, eje_x, 
     sns.scatterplot(
         x=df_filtrado[eje_x],
         y=df_filtrado[eje_y],
-        s=df_filtrado["CARTERA CAPITAL TOTAL"] * 0.1,  # Tamaño de puntos ajustado
+        s=df_filtrado["CARTERA CAPITAL TOTAL"] * 0.0001,  # Tamaño de puntos ajustado
         alpha=0.5,
         color='deepskyblue',
         ax=ax
