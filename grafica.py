@@ -52,35 +52,43 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocio, plazo_meses, eje_x, 
 
 
 # Función para crear el gráfico combinado de barras y línea
-def crear_grafico_barras_linea(df, negocio, plazo_meses):
+def crear_grafico_barras_linea(df, negocio, plazo_meses, eje_y):
     # Filtra los datos por negocio y por plazo, o todos los periodos
     df_filtrado = df[df["NEGOCIO"] == negocio]
     if plazo_meses != "Todos":
         df_filtrado = df_filtrado[df_filtrado["PLAZO MESES"] == plazo_meses]
     # Filtra por el umbral de CARTERA CAPITAL TOTAL
     df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] >= 100000]
-    # Continua con el proceso de filtrado y generación del gráfico como antes
-    df_filtrado = df_filtrado.dropna(subset=["RRR", "RRR (con margen)", "%USGAAP 90 PONDERADO"])
-    df_filtrado = df_filtrado[(df_filtrado["RRR"] != 0) & (df_filtrado["RRR (con margen)"] != 0)]
-    df_filtrado = df_filtrado.sort_values(by='RRR', ascending=False)
+    
+    # Filtra las columnas necesarias para el gráfico y asegura que existen valores válidos en eje_y
+    df_filtrado = df_filtrado.dropna(subset=[eje_y, "%USGAAP 90 PONDERADO"])
+    df_filtrado = df_filtrado[(df_filtrado[eje_y] != 0)]
+    df_filtrado = df_filtrado.sort_values(by=eje_y, ascending=False)
 
     fig, ax1 = plt.subplots(figsize=(15, 7), dpi=800)
-    barplot = sns.barplot(x='DEPARTAMENTO / PRODUCTO', y='RRR', data=df_filtrado, palette="coolwarm", dodge=False, edgecolor='black', ax=ax1)
+    
+    # Crear gráfico de barras para eje_y seleccionado
+    barplot = sns.barplot(
+        x='DEPARTAMENTO / PRODUCTO', y=eje_y, data=df_filtrado,
+        palette="coolwarm", dodge=False, edgecolor='black', ax=ax1
+    )
+    
+    # Añadir etiquetas de texto encima de las barras
     for i, row in enumerate(df_filtrado.itertuples()):
-        barplot.text(i, row.RRR + 0.02, f"{row.RRR:.1f}x", ha="center", fontweight='bold', fontsize=10)
+        barplot.text(i, getattr(row, eje_y) + 0.02, f"{getattr(row, eje_y):.1f}", ha="center", fontweight='bold', fontsize=10)
 
     ax1.set_xlabel("Departamento / Producto")
-    ax1.set_ylabel("RRR")
+    ax1.set_ylabel(eje_y)
     ax1.set_title(f"Gráfico de barras para {negocio} - {plazo_meses} meses" if plazo_meses != "Todos" else f"Gráfico de barras para {negocio} - Todos los periodos")
     ax1.tick_params(axis='x', rotation=80, labelsize=10)
     ax1.grid(False)
-   
+
+    # Crear gráfico de línea en el eje secundario
     ax2 = ax1.twinx()
     ax2.plot(df_filtrado['DEPARTAMENTO / PRODUCTO'], df_filtrado['%USGAAP 90 PONDERADO'], color='red', marker='o', linewidth=2)
     ax2.set_ylabel("%USGAAP 90 PONDERADO", color='red')
     fig.tight_layout()
     st.pyplot(fig)
-    
 # Título de la aplicación
 st.title("Análisis de Cartera y Morosidad")
 
