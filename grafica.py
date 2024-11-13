@@ -75,7 +75,15 @@ st.header("Gráfico de Dispersión")
 hojas_seleccionadas_disp = st.multiselect("Selecciona las hojas para el gráfico de dispersión:", list(dfs.keys()), default=["TOTAL CARTERA_resumen"])
 negocios_disp = dfs["TOTAL CARTERA_resumen"]["NEGOCIO"].unique()
 negocio_disp = st.selectbox("Selecciona el negocio para el gráfico de dispersión:", negocios_disp)
-plazo_meses_disp = st.slider("Selecciona el plazo (en meses) para el gráfico de dispersión:", 1, 24, 6)
+# Obtener los plazos únicos disponibles en los datos
+plazos_disponibles = sorted(dfs["TOTAL CARTERA_resumen"]["PLAZO MESES"].unique())
+
+# Cambiar el slider por un multiselect que permita elegir múltiples plazos
+plazo_meses_disp = st.multiselect(
+    "Selecciona los plazos (en meses) para el gráfico de dispersión:",
+    plazos_disponibles, 
+    default=plazos_disponibles  # Seleccionar todos los plazos por defecto
+)
 columnas_numericas = pd.concat(dfs.values(), ignore_index=True).select_dtypes(include=['float64', 'int64']).columns
 eje_x = st.selectbox("Selecciona la variable para el Eje X en el gráfico de dispersión:", columnas_numericas)
 eje_y = st.selectbox("Selecciona la variable para el Eje Y en el gráfico de dispersión:", columnas_numericas)
