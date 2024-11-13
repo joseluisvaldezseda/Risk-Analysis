@@ -14,6 +14,9 @@ dfs = {
     "RECOMPRA_resumen": pd.read_excel(ruta_archivo, sheet_name="RECOMPRA_resumen")
 }
 
+# Expandir el ancho de la aplicación en Streamlit
+st.set_page_config(layout="wide")
+
 # Función para crear el gráfico de dispersión
 def crear_grafico_dispersión(hojas_seleccionadas, negocio, plazo_meses, eje_x, eje_y):
     df_combined = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas], ignore_index=True)
@@ -21,7 +24,7 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocio, plazo_meses, eje_x, 
     df_filtrado = df_filtrado.dropna(subset=[eje_x, eje_y])
     df_filtrado = df_filtrado[(df_filtrado[eje_x] != 0) & (df_filtrado[eje_y] != 0)]
 
-    fig, ax = plt.subplots(figsize=(10, 5))
+    fig, ax = plt.subplots(figsize=(15, 7))  # Tamaño ampliado
     sns.scatterplot(
         x=df_filtrado[eje_x],
         y=df_filtrado[eje_y],
@@ -33,7 +36,7 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocio, plazo_meses, eje_x, 
     )
     for i in range(df_filtrado.shape[0]):
         ax.text(df_filtrado[eje_x].iloc[i], df_filtrado[eje_y].iloc[i], df_filtrado["DEPARTAMENTO / PRODUCTO"].iloc[i],
-                fontsize=6, ha='right', va='bottom', fontweight='bold', bbox=dict(facecolor='white', alpha=0.5, edgecolor='black'))
+                fontsize=8, ha='right', va='bottom', fontweight='bold', bbox=dict(facecolor='white', alpha=0.5, edgecolor='black'))
 
     ax.set_xlabel(eje_x)
     ax.set_ylabel(eje_y)
@@ -47,7 +50,7 @@ def crear_grafico_barras_linea(df, negocio, plazo_meses):
     df_filtrado = df_filtrado[(df_filtrado["RRR"] != 0) & (df_filtrado["RRR (con margen)"] != 0)]
     df_filtrado = df_filtrado.sort_values(by='RRR', ascending=False)
 
-    fig, ax1 = plt.subplots(figsize=(10, 5))
+    fig, ax1 = plt.subplots(figsize=(15, 7))  # Tamaño ampliado
     barplot = sns.barplot(x='DEPARTAMENTO / PRODUCTO', y='RRR', data=df_filtrado, palette="coolwarm", dodge=False, edgecolor='black', ax=ax1)
     for i, row in enumerate(df_filtrado.itertuples()):
         barplot.text(i, row.RRR + 0.02, f"{row.RRR:.1f}x", ha="center", fontweight='bold', fontsize=10)
