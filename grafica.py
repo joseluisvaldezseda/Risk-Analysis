@@ -86,11 +86,14 @@ crear_grafico_dispersión(hojas_seleccionadas_disp, negocio_disp, plazo_meses_di
 # Widgets para el gráfico de barras y línea
 st.header("Gráfico de Barras y Línea")
 hoja_seleccionada_barras = st.selectbox("Selecciona la hoja para el gráfico de barras y línea:", list(dfs.keys()))
+
+# Carga directamente el DataFrame sin usar pd.concat
+df_barras = dfs[hoja_seleccionada_barras]
 negocios_barras = dfs["TOTAL CARTERA_resumen"]["NEGOCIO"].unique()
 negocio_barras = st.selectbox("Selecciona el negocio para el gráfico de barras y línea:", negocios_barras)
 plazo_meses_barras = st.slider("Selecciona el plazo (en meses) para el gráfico de barras y línea:", 1, 24, 6)
 
-df_barras = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas_barras], ignore_index=True)
+#df_barras = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas_barras], ignore_index=True)
 
 # Mostrar gráfico de barras y línea
 crear_grafico_barras_linea(df_barras, negocio_barras, plazo_meses_barras)
