@@ -24,7 +24,7 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocio, plazo_meses, eje_x, 
     df_filtrado = df_filtrado.dropna(subset=[eje_x, eje_y])
     df_filtrado = df_filtrado[(df_filtrado[eje_x] != 0) & (df_filtrado[eje_y] != 0)]
 
-    fig, ax = plt.subplots(figsize=(15, 7))
+    fig, ax = plt.subplots(figsize=(15, 7),dpi=150)
     sns.scatterplot(
         x=df_filtrado[eje_x],
         y=df_filtrado[eje_y],
@@ -50,7 +50,7 @@ def crear_grafico_barras_linea(df, negocio, plazo_meses):
     df_filtrado = df_filtrado[(df_filtrado["RRR"] != 0) & (df_filtrado["RRR (con margen)"] != 0)]
     df_filtrado = df_filtrado.sort_values(by='RRR', ascending=False)
 
-    fig, ax1 = plt.subplots(figsize=(15, 7))
+    fig, ax1 = plt.subplots(figsize=(15, 7),dpi=150)
     barplot = sns.barplot(x='DEPARTAMENTO / PRODUCTO', y='RRR', data=df_filtrado, palette="coolwarm", dodge=False, edgecolor='black', ax=ax1)
     for i, row in enumerate(df_filtrado.itertuples()):
         barplot.text(i, row.RRR + 0.02, f"{row.RRR:.1f}x", ha="center", fontweight='bold', fontsize=10)
