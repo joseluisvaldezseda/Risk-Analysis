@@ -20,11 +20,17 @@ st.set_page_config(layout="wide")
 # Función para crear el gráfico de dispersión
 def crear_grafico_dispersión(hojas_seleccionadas, negocio, plazo_meses, eje_x, eje_y):
     df_combined = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas], ignore_index=True)
-    df_filtrado = df_combined[(df_combined["NEGOCIO"] == negocio) & (df_combined["PLAZO MESES"] == plazo_meses)]
+    
+    # Filtra los datos por negocio y por plazo, o todos los periodos
+    df_filtrado = df_combined[df_combined["NEGOCIO"] == negocio]
+    if plazo_meses != "Todos":
+        df_filtrado = df_filtrado[df_filtrado["PLAZO MESES"] == plazo_meses]
+    
+    # Continua el resto de la función sin cambios
     df_filtrado = df_filtrado.dropna(subset=[eje_x, eje_y])
     df_filtrado = df_filtrado[(df_filtrado[eje_x] != 0) & (df_filtrado[eje_y] != 0)]
     
-    fig, ax = plt.subplots(figsize=(15, 7),dpi=8000)
+    fig, ax = plt.subplots(figsize=(15, 7), dpi=8000)
     sns.scatterplot(
         x=df_filtrado[eje_x],
         y=df_filtrado[eje_y],
@@ -39,9 +45,10 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocio, plazo_meses, eje_x, 
 
     ax.set_xlabel(eje_x)
     ax.set_ylabel(eje_y)
-    ax.set_title(f"Gráfico de dispersión para {negocio} - {plazo_meses} meses")
+    ax.set_title(f"Gráfico de dispersión para {negocio} - {plazo_meses} meses" if plazo_meses != "Todos" else f"Gráfico de dispersión para {negocio} - Todos los periodos")
     ax.legend([], [], frameon=False)  # Oculta la leyenda de tamaño
     st.pyplot(fig)
+
 
 # Función para crear el gráfico combinado de barras y línea
 def crear_grafico_barras_linea(df, negocio, plazo_meses):
@@ -77,7 +84,9 @@ negocios_disp = dfs["TOTAL CARTERA_resumen"]["NEGOCIO"].unique()
 negocio_disp = st.selectbox("Selecciona el negocio para el gráfico de dispersión:", negocios_disp)
 # Obtener los plazos únicos disponibles en los datos
 # Selector de plazo en meses con opción de "Todos"
-plazo_meses_disp = st.slider("Selecciona el plazo (en meses) para el gráfico de dispersión:", 1, 24, 6) 
+# Cambia el slider por un selectbox que incluya la opción "Todos los periodos"
+plazo_meses_disp = st.selectbox("Selecciona el plazo (en meses) para el gráfico de dispersión:", options=["Todos"] + list(range(1, 25)), index=1)
+
 columnas_numericas = pd.concat(dfs.values(), ignore_index=True).select_dtypes(include=['float64', 'int64']).columns
 eje_x = st.selectbox("Selecciona la variable para el Eje X en el gráfico de dispersión:", columnas_numericas)
 eje_y = st.selectbox("Selecciona la variable para el Eje Y en el gráfico de dispersión:", columnas_numericas)
