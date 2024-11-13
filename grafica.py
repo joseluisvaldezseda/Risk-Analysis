@@ -4,7 +4,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Configurar estilo de Seaborn
-sns.set_theme(style="whitegrid")
+sns.set_theme(style="white")
 
 # Cargar datos
 ruta_archivo = 'Resumen_Cartera_Morosidad.xlsx'
@@ -60,7 +60,7 @@ def crear_grafico_barras_linea(df, negocio, plazo_meses):
     ax1.set_title(f"Gráfico de barras para {negocio} - {plazo_meses} meses")
     ax1.tick_params(axis='x', rotation=80, labelsize=10)
     ax1.grid(False)
-    ax2.grid(False)
+   
     ax2 = ax1.twinx()
     ax2.plot(df_filtrado['DEPARTAMENTO / PRODUCTO'], df_filtrado['%USGAAP 90 PONDERADO'], color='red', marker='o', linewidth=2)
     ax2.set_ylabel("%USGAAP 90 PONDERADO", color='red')
