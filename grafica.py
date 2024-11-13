@@ -18,38 +18,28 @@ dfs = {
 st.set_page_config(layout="wide")
 
 # Función para crear el gráfico de dispersión
-# Función para crear el gráfico de dispersión
 def crear_grafico_dispersión(hojas_seleccionadas, negocio, plazo_meses, eje_x, eje_y):
-    # Añadir una columna que indique la hoja de origen
-    df_combined = pd.concat(
-        [dfs[hoja].assign(HOJA=hoja) for hoja in hojas_seleccionadas],
-        ignore_index=True
-    )
+    df_combined = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas], ignore_index=True)
     
-    # Filtrar los datos por negocio y por plazo
+    # Filtra los datos por negocio y por plazo, o todos los periodos
     df_filtrado = df_combined[df_combined["NEGOCIO"] == negocio]
     if plazo_meses != "Todos":
         df_filtrado = df_filtrado[df_filtrado["PLAZO MESES"] == plazo_meses]
-    
-    # Filtrar por el umbral de CARTERA CAPITAL TOTAL
+    # Filtra por el umbral de CARTERA CAPITAL TOTAL
     df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] >= 100000]
+    # Continua el resto de la función sin cambios
     df_filtrado = df_filtrado.dropna(subset=[eje_x, eje_y])
     df_filtrado = df_filtrado[(df_filtrado[eje_x] != 0) & (df_filtrado[eje_y] != 0)]
     
-    # Crear gráfico de dispersión con colores diferenciados por hoja
-    fig, ax = plt.subplots(figsize=(15, 7), dpi=800)
+    fig, ax = plt.subplots(figsize=(15, 7), dpi=8000)
     sns.scatterplot(
-        data=df_filtrado,
-        x=eje_x,
-        y=eje_y,
+        x=df_filtrado[eje_x],
+        y=df_filtrado[eje_y],
         s=df_filtrado["CARTERA CAPITAL TOTAL"] * 0.0001,  # Tamaño de puntos ajustado
         alpha=0.5,
-        hue="HOJA",  # Color según la hoja
-        palette="Set1",  # Paleta de colores para diferenciarlos
+        color='deepskyblue',
         ax=ax
     )
-    
-    # Añadir etiquetas a los puntos
     for i in range(df_filtrado.shape[0]):
         ax.text(df_filtrado[eje_x].iloc[i], df_filtrado[eje_y].iloc[i], df_filtrado["DEPARTAMENTO / PRODUCTO"].iloc[i],
                 fontsize=4, ha='right', va='bottom', fontweight='bold', bbox=dict(facecolor='white', alpha=0.5, edgecolor='black'))
@@ -57,6 +47,7 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocio, plazo_meses, eje_x, 
     ax.set_xlabel(eje_x)
     ax.set_ylabel(eje_y)
     ax.set_title(f"Gráfico de dispersión para {negocio} - {plazo_meses} meses" if plazo_meses != "Todos" else f"Gráfico de dispersión para {negocio} - Todos los periodos")
+    ax.legend([], [], frameon=False)  # Oculta la leyenda de tamaño
     st.pyplot(fig)
 
 
@@ -124,4 +115,4 @@ plazo_meses_barras = st.selectbox("Selecciona el plazo (en meses) para el gráfi
 #df_barras = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas_barras], ignore_index=True)
 
 # Mostrar gráfico de barras y línea
-crear_grafico_barras_linea(df_barras, negocio_barras, plazo_meses_barras)
+crear_grafico_barras_linea(df_barras, negocio_barras, plazo_meses_barras) cuando agrego hojas hojas_seleccionadas_disp = st.multiselect("Selecciona las hojas para el gráfico de dispersión:", list(dfs.keys()), default=["TOTAL CARTERA_resumen"])
