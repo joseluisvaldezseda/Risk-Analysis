@@ -85,7 +85,7 @@ crear_grafico_dispersión(hojas_seleccionadas_disp, negocio_disp, plazo_meses_di
 
 # Widgets para el gráfico de barras y línea
 st.header("Gráfico de Barras y Línea")
-hojas_seleccionadas_barras = st.multiselect("Selecciona las hojas para el gráfico de barras y línea:", list(dfs.keys()), default=["TOTAL CARTERA_resumen"])
+hoja_seleccionada_barras = st.selectbox("Selecciona la hoja para el gráfico de barras y línea:", list(dfs.keys()))
 negocios_barras = dfs["TOTAL CARTERA_resumen"]["NEGOCIO"].unique()
 negocio_barras = st.selectbox("Selecciona el negocio para el gráfico de barras y línea:", negocios_barras)
 plazo_meses_barras = st.slider("Selecciona el plazo (en meses) para el gráfico de barras y línea:", 1, 24, 6)
