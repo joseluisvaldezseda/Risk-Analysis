@@ -115,4 +115,4 @@ plazo_meses_barras = st.selectbox("Selecciona el plazo (en meses) para el gráfi
 #df_barras = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas_barras], ignore_index=True)
 
 # Mostrar gráfico de barras y línea
-crear_grafico_barras_linea(df_barras, negocio_barras, plazo_meses_barras) cuando agrego hojas hojas_seleccionadas_disp = st.multiselect("Selecciona las hojas para el gráfico de dispersión:", list(dfs.keys()), default=["TOTAL CARTERA_resumen"])
+crear_grafico_barras_linea(df_barras, negocio_barras, plazo_meses_barras)
