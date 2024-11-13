@@ -1,10 +1,10 @@
+import streamlit as st 
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-import streamlit as st
 
 # Configurar estilo de Seaborn
-sns.set(style="whitegrid")
+sns.set(style="white")
 
 # Cargar datos
 ruta_archivo = 'Resumen_Cartera_Morosidad.xlsx'
@@ -25,25 +25,19 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocio, plazo_meses, eje_x, 
     sns.scatterplot(
         x=df_filtrado[eje_x],
         y=df_filtrado[eje_y],
-        size=df_filtrado["CARTERA CAPITAL TOTAL"] * 0.05,
-        sizes=(50, 700),
-        alpha=0.7,
-        color='skyblue',
+        size=df_filtrado["CARTERA CAPITAL TOTAL"] * 0.1,
+        sizes=(100, 1000),
+        alpha=0.5,
+        color='blue',
         ax=ax
     )
-
-    # Etiquetas más estilizadas para cada punto
     for i in range(df_filtrado.shape[0]):
-        ax.text(
-            df_filtrado[eje_x].iloc[i], df_filtrado[eje_y].iloc[i],
-            df_filtrado["DEPARTAMENTO / PRODUCTO"].iloc[i],
-            fontsize=8, ha='right', va='bottom', fontweight='bold',
-            bbox=dict(facecolor='white', alpha=0.6, edgecolor='grey', boxstyle="round,pad=0.3")
-        )
+        ax.text(df_filtrado[eje_x].iloc[i], df_filtrado[eje_y].iloc[i], df_filtrado["DEPARTAMENTO / PRODUCTO"].iloc[i],
+                fontsize=6, ha='right', va='bottom', fontweight='bold', bbox=dict(facecolor='white', alpha=0.5, edgecolor='black'))
 
-    ax.set_xlabel(eje_x, fontsize=12)
-    ax.set_ylabel(eje_y, fontsize=12)
-    ax.set_title(f"Gráfico de Dispersión para {negocio} - {plazo_meses} meses", fontsize=14)
+    ax.set_xlabel(eje_x)
+    ax.set_ylabel(eje_y)
+    ax.set_title(f"Gráfico de dispersión para {negocio} - {plazo_meses} meses")
     st.pyplot(fig)
 
 # Función para crear el gráfico combinado de barras y línea
@@ -54,28 +48,18 @@ def crear_grafico_barras_linea(df, negocio, plazo_meses):
     df_filtrado = df_filtrado.sort_values(by='RRR', ascending=False)
 
     fig, ax1 = plt.subplots(figsize=(10, 5))
-    barplot = sns.barplot(
-        x='DEPARTAMENTO / PRODUCTO', y='RRR', data=df_filtrado,
-        palette="viridis", dodge=False, edgecolor='black', ax=ax1
-    )
-
-    # Agregar etiquetas con valores encima de las barras
+    barplot = sns.barplot(x='DEPARTAMENTO / PRODUCTO', y='RRR', data=df_filtrado, palette="coolwarm", dodge=False, edgecolor='black', ax=ax1)
     for i, row in enumerate(df_filtrado.itertuples()):
-        barplot.text(i, row.RRR + 0.1, f"{row.RRR:.1f}x",
-                     ha="center", fontweight='bold', fontsize=9, color="black")
+        barplot.text(i, row.RRR + 0.02, f"{row.RRR:.1f}x", ha="center", fontweight='bold', fontsize=10)
 
-    ax1.set_xlabel("Departamento / Producto", fontsize=12)
-    ax1.set_ylabel("RRR", fontsize=12)
-    ax1.set_title(f"Gráfico de Barras para {negocio} - {plazo_meses} meses", fontsize=14)
-    ax1.tick_params(axis='x', rotation=80, labelsize=8)
+    ax1.set_xlabel("Departamento / Producto")
+    ax1.set_ylabel("RRR")
+    ax1.set_title(f"Gráfico de barras para {negocio} - {plazo_meses} meses")
+    ax1.tick_params(axis='x', rotation=80, labelsize=10)
 
-    # Graficar la línea en el segundo eje
     ax2 = ax1.twinx()
-    ax2.plot(df_filtrado['DEPARTAMENTO / PRODUCTO'], df_filtrado['%USGAAP 90 PONDERADO'],
-             color='tomato', marker='o', linewidth=1.5, linestyle="--")
-    ax2.set_ylabel("%USGAAP 90 PONDERADO", fontsize=12, color='tomato')
-    ax2.tick_params(axis='y', labelcolor='tomato')
-
+    ax2.plot(df_filtrado['DEPARTAMENTO / PRODUCTO'], df_filtrado['%USGAAP 90 PONDERADO'], color='red', marker='o', linewidth=2)
+    ax2.set_ylabel("%USGAAP 90 PONDERADO", color='red')
     fig.tight_layout()
     st.pyplot(fig)
 
