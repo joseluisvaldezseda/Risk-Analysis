@@ -72,21 +72,25 @@ st.title("Análisis de Cartera y Morosidad")
 
 # Widgets para el gráfico de dispersión
 st.header("Gráfico de Dispersión")
-hojas_seleccionadas = st.multiselect("Selecciona las hojas:", list(dfs.keys()), default=["TOTAL CARTERA_resumen"])
-negocios = dfs["TOTAL CARTERA_resumen"]["NEGOCIO"].unique()
-negocio = st.selectbox("Selecciona el negocio:", negocios)
-plazo_meses = st.slider("Selecciona el plazo (en meses):", 1, 24, 6)
+hojas_seleccionadas_disp = st.multiselect("Selecciona las hojas para el gráfico de dispersión:", list(dfs.keys()), default=["TOTAL CARTERA_resumen"])
+negocios_disp = dfs["TOTAL CARTERA_resumen"]["NEGOCIO"].unique()
+negocio_disp = st.selectbox("Selecciona el negocio para el gráfico de dispersión:", negocios_disp)
+plazo_meses_disp = st.slider("Selecciona el plazo (en meses) para el gráfico de dispersión:", 1, 24, 6)
 columnas_numericas = pd.concat(dfs.values(), ignore_index=True).select_dtypes(include=['float64', 'int64']).columns
-eje_x = st.selectbox("Selecciona la variable para el Eje X:", columnas_numericas)
-eje_y = st.selectbox("Selecciona la variable para el Eje Y:", columnas_numericas)
+eje_x = st.selectbox("Selecciona la variable para el Eje X en el gráfico de dispersión:", columnas_numericas)
+eje_y = st.selectbox("Selecciona la variable para el Eje Y en el gráfico de dispersión:", columnas_numericas)
 
 # Mostrar gráfico de dispersión
-crear_grafico_dispersión(hojas_seleccionadas, negocio, plazo_meses, eje_x, eje_y)
+crear_grafico_dispersión(hojas_seleccionadas_disp, negocio_disp, plazo_meses_disp, eje_x, eje_y)
 
 # Widgets para el gráfico de barras y línea
 st.header("Gráfico de Barras y Línea")
-hoja_barras = st.selectbox("Selecciona la hoja para el gráfico de barras y línea:", list(dfs.keys()))
-df_barras = dfs[hoja_barras]
+hojas_seleccionadas_barras = st.multiselect("Selecciona las hojas para el gráfico de barras y línea:", list(dfs.keys()), default=["TOTAL CARTERA_resumen"])
+negocios_barras = dfs["TOTAL CARTERA_resumen"]["NEGOCIO"].unique()
+negocio_barras = st.selectbox("Selecciona el negocio para el gráfico de barras y línea:", negocios_barras)
+plazo_meses_barras = st.slider("Selecciona el plazo (en meses) para el gráfico de barras y línea:", 1, 24, 6)
+
+df_barras = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas_barras], ignore_index=True)
 
 # Mostrar gráfico de barras y línea
-crear_grafico_barras_linea(df_barras, negocio, plazo_meses)
+crear_grafico_barras_linea(df_barras, negocio_barras, plazo_meses_barras)
