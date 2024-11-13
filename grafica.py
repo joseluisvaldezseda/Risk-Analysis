@@ -26,7 +26,7 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocio, plazo_meses, eje_x, 
     if plazo_meses != "Todos":
         df_filtrado = df_filtrado[df_filtrado["PLAZO MESES"] == plazo_meses]
     # Filtra por el umbral de CARTERA CAPITAL TOTAL
-    df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] >= 1000]
+    df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] >= 10000]
     # Continua el resto de la función sin cambios
     df_filtrado = df_filtrado.dropna(subset=[eje_x, eje_y])
     df_filtrado = df_filtrado[(df_filtrado[eje_x] != 0) & (df_filtrado[eje_y] != 0)]
@@ -58,7 +58,7 @@ def crear_grafico_barras_linea(df, negocio, plazo_meses):
     if plazo_meses != "Todos":
         df_filtrado = df_filtrado[df_filtrado["PLAZO MESES"] == plazo_meses]
     # Filtra por el umbral de CARTERA CAPITAL TOTAL
-    df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] >= 1000]
+    df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] >= 10000]
     # Continua con el proceso de filtrado y generación del gráfico como antes
     df_filtrado = df_filtrado.dropna(subset=["RRR", "RRR (con margen)", "%USGAAP 90 PONDERADO"])
     df_filtrado = df_filtrado[(df_filtrado["RRR"] != 0) & (df_filtrado["RRR (con margen)"] != 0)]
