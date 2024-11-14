@@ -73,7 +73,7 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocios_seleccionados, depar
         xaxis_title=eje_x,
         yaxis_title=eje_y,
         legend_title="Negocios",
-        height=600
+        height=650
     )
     
     # Mostrar el gráfico en Streamlit
