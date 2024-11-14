@@ -3,6 +3,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+import plotly.graph_objects as go
 import plotly.express as px
 
 
@@ -87,30 +88,55 @@ def crear_grafico_barras_linea(df, negocio, plazo_meses):
     df_filtrado = df[df["NEGOCIO"] == negocio]
     if plazo_meses != "Todos":
         df_filtrado = df_filtrado[df_filtrado["PLAZO MESES"] == plazo_meses]
+    
     # Filtra por el umbral de CARTERA CAPITAL TOTAL
     df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] >= 100000]
-    # Continua con el proceso de filtrado y generación del gráfico como antes
     df_filtrado = df_filtrado.dropna(subset=["RRR", "%USGAAP 90 PONDERADO"])
-    df_filtrado = df_filtrado[(df_filtrado["RRR"] != 0)]
+    df_filtrado = df_filtrado[df_filtrado["RRR"] != 0]
     df_filtrado = df_filtrado.sort_values(by='RRR', ascending=False)
-
-    fig, ax1 = plt.subplots(figsize=(15, 7), dpi=800)
-    barplot = sns.barplot(x='DEPARTAMENTO / PRODUCTO', y='RRR', data=df_filtrado, palette="coolwarm", dodge=False, edgecolor='black', ax=ax1)
-    for i, row in enumerate(df_filtrado.itertuples()):
-        barplot.text(i, row.RRR + 0.02, f"{row.RRR:.1f}x", ha="center", fontweight='bold', fontsize=10)
-
-    ax1.set_xlabel("Departamento / Producto")
-    ax1.set_ylabel("RRR")
-    ax1.set_title(f"Gráfico de barras para {negocio} - {plazo_meses} meses" if plazo_meses != "Todos" else f"Gráfico de barras para {negocio} - Todos los periodos")
-    ax1.tick_params(axis='x', rotation=80, labelsize=10)
-    ax1.grid(False)
-   
-    ax2 = ax1.twinx()
-    ax2.plot(df_filtrado['DEPARTAMENTO / PRODUCTO'], df_filtrado['%USGAAP 90 PONDERADO'], color='red', marker='o', linewidth=2)
-    ax2.set_ylabel("%USGAAP 90 PONDERADO", color='red')
-    fig.tight_layout()
-    st.pyplot(fig)
     
+    # Crear gráfico de barras y línea en plotly
+    fig = go.Figure()
+    
+    # Gráfico de barras para RRR
+    fig.add_trace(go.Bar(
+        x=df_filtrado['DEPARTAMENTO / PRODUCTO'],
+        y=df_filtrado['RRR'],
+        name='RRR',
+        marker_color='blue',
+        text=[f"{rrr:.1f}x" for rrr in df_filtrado['RRR']],  # Mostrar valores en cada barra
+        textposition='outside'
+    ))
+    
+    # Gráfico de línea para %USGAAP 90 PONDERADO
+    fig.add_trace(go.Scatter(
+        x=df_filtrado['DEPARTAMENTO / PRODUCTO'],
+        y=df_filtrado['%USGAAP 90 PONDERADO'],
+        name='%USGAAP 90 PONDERADO',
+        mode='lines+markers',
+        marker=dict(color='red'),
+        line=dict(width=2)
+    ))
+    
+    # Configuración del diseño
+    fig.update_layout(
+        title=f"Gráfico de barras y línea para {negocio} - {plazo_meses} meses" if plazo_meses != "Todos" else f"Gráfico de barras y línea para {negocio} - Todos los periodos",
+        xaxis_title="Departamento / Producto",
+        yaxis_title="RRR",
+        yaxis2=dict(
+            title="%USGAAP 90 PONDERADO",
+            overlaying='y',
+            side='right'
+        ),
+        legend=dict(title="Indicadores"),
+        height=700
+    )
+    
+    fig.update_traces(textfont_size=10)
+    fig.update_xaxes(tickangle=80)
+    
+    # Mostrar el gráfico en Streamlit
+    st.plotly_chart(fig)
 # Título de la aplicación
 st.title("Análisis de Cartera y Morosidad")
 
