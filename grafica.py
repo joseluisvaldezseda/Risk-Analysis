@@ -36,7 +36,7 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocios_seleccionados, depar
         df_filtrado = df_filtrado[df_filtrado["PLAZO MESES"] == plazo_meses]
     
     # Filtra por el umbral de CARTERA CAPITAL TOTAL
-    df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] >= 100000]
+    df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] >= 100000 & (df_filtrado["TASA"] == "CON TASA")]
     df_filtrado = df_filtrado.dropna(subset=[eje_x, eje_y])
     df_filtrado = df_filtrado[(df_filtrado[eje_x] != 0) & (df_filtrado[eje_y] != 0)]
     
