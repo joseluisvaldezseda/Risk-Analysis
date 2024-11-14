@@ -3,6 +3,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+import plotly.express as px
 
 
 # Configurar estilo de Seaborn
@@ -35,38 +36,33 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocios_seleccionados, depar
     if plazo_meses != "Todos":
         df_filtrado = df_filtrado[df_filtrado["PLAZO MESES"] == plazo_meses]
     
-    # Filtra por el umbral de CARTERA CAPITAL TOTAL
+    # Filtra por el umbral de CARTERA CAPITAL TOTAL y limpia datos
     df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] >= 100000]
     df_filtrado = df_filtrado[df_filtrado["TASA"] == "CON TASA"]
     df_filtrado = df_filtrado.dropna(subset=[eje_x, eje_y])
     df_filtrado = df_filtrado[(df_filtrado[eje_x] != 0) & (df_filtrado[eje_y] != 0)]
-    
-    fig, ax = plt.subplots(figsize=(15, 7), dpi=800)
-    
-    # Graficar cada negocio con el color asignado
-    for negocio in negocios_seleccionados:
-        df_negocio = df_filtrado[df_filtrado["NEGOCIO"] == negocio]
-        sns.scatterplot(
-            x=df_negocio[eje_x],
-            y=df_negocio[eje_y],
-            s=df_negocio["CARTERA CAPITAL TOTAL"] * 0.0001,
-            alpha=0.5,
-            color=colores_negocios.get(negocio, 'blue'),  # Asigna color o azul por defecto si no está en colores_negocios
-            label=negocio,
-            ax=ax
-        )
-        # Añadir etiquetas de texto
-        for i in range(df_negocio.shape[0]):
-            ax.text(df_negocio[eje_x].iloc[i], df_negocio[eje_y].iloc[i], df_negocio["DEPARTAMENTO / PRODUCTO"].iloc[i],
-                    fontsize=4, ha='right', va='bottom', fontweight='bold', bbox=dict(facecolor='white', alpha=0.5, edgecolor='black'))
 
-    ax.set_xlabel(eje_x)
-    ax.set_ylabel(eje_y)
-    ax.set_title(f"Gráfico de dispersión para negocios seleccionados - {plazo_meses} meses" if plazo_meses != "Todos" else "Gráfico de dispersión para negocios seleccionados - Todos los periodos")
+    # Crea gráfico de dispersión interactivo con plotly
+    fig = px.scatter(
+        df_filtrado, 
+        x=eje_x, 
+        y=eje_y,
+        color="NEGOCIO",
+        size="CARTERA CAPITAL TOTAL",
+        hover_name="DEPARTAMENTO / PRODUCTO",
+        color_discrete_map=colores_negocios,
+        title=f"Gráfico de dispersión para negocios seleccionados - {plazo_meses} meses" if plazo_meses != "Todos" else "Gráfico de dispersión para negocios seleccionados - Todos los periodos"
+    )
 
-    handles = [mpatches.Patch(color=color, label=negocio) for negocio, color in colores_negocios.items() if negocio in negocios_seleccionados]
-    ax.legend(handles=handles, title="Negocios", loc='upper right', markerscale=0.5)
-    st.pyplot(fig)
+    fig.update_layout(
+        xaxis_title=eje_x,
+        yaxis_title=eje_y,
+        legend_title="Negocios",
+        template="simple_white"
+    )
+
+    st.plotly_chart(fig)
+
 
 
 
