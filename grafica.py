@@ -52,6 +52,12 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocios_seleccionados, depar
         color="NEGOCIO",
         color_discrete_map=colores_negocios,
         hover_name="DEPARTAMENTO / PRODUCTO",
+        hover_data={
+            "PLAZO MESES": True,
+            "CARTERA CAPITAL TOTAL": True,
+            eje_x: True,
+            eje_y: True
+        },
         text="DEPARTAMENTO / PRODUCTO",  # Agregar etiquetas estáticas
         title=f"Gráfico de dispersión para negocios seleccionados - {plazo_meses} meses" if plazo_meses != "Todos" else "Gráfico de dispersión para negocios seleccionados - Todos los periodos"
     )
