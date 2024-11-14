@@ -27,7 +27,7 @@ colores_negocios = {
     "PROGRESSA": "purple"
 }
 
-def crear_grafico_dispersión(hojas_seleccionadas, negocios_seleccionados, departamento, plazo_meses, eje_x, eje_y):
+def crear_grafico_dispersión(hojas_seleccionadas, negocios_seleccionados, departamento_seleccionados, plazo_meses, eje_x, eje_y):
     # Combinar los datos de las hojas seleccionadas
     df_combined = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas], ignore_index=True)
     
