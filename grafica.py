@@ -25,12 +25,13 @@ colores_negocios = {
     "PROGRESSA": "purple"
 }
 
-# Función para crear el gráfico de dispersión
 def crear_grafico_dispersión(hojas_seleccionadas, negocios_seleccionados, departamento, plazo_meses, eje_x, eje_y):
     df_combined = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas], ignore_index=True)
     
-    # Filtra los datos por los negocios seleccionados y por plazo, o todos los periodos
+    # Filtra los datos por los negocios seleccionados, departamento y plazo
     df_filtrado = df_combined[df_combined["NEGOCIO"].isin(negocios_seleccionados)]
+    if departamento != "Todos":
+        df_filtrado = df_filtrado[df_filtrado["DEPARTAMENTO / PRODUCTO"] == departamento]
     if plazo_meses != "Todos":
         df_filtrado = df_filtrado[df_filtrado["PLAZO MESES"] == plazo_meses]
     
@@ -65,6 +66,7 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocios_seleccionados, depar
     handles = [mpatches.Patch(color=color, label=negocio) for negocio, color in colores_negocios.items() if negocio in negocios_seleccionados]
     ax.legend(handles=handles, title="Negocios", loc='upper right', markerscale=0.5)
     st.pyplot(fig)
+
 
 
 # Función para crear el gráfico combinado de barras y línea
