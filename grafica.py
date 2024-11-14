@@ -124,7 +124,7 @@ eje_x = st.selectbox("Selecciona la variable para el Eje X en el gráfico de dis
 eje_y = st.selectbox("Selecciona la variable para el Eje Y en el gráfico de dispersión:", opciones_columnas)
 
 # Mostrar gráfico de dispersión
-crear_grafico_dispersión(hojas_seleccionadas_disp, negocios_disp, plazo_meses_disp, eje_x, eje_y)
+crear_grafico_dispersión(hojas_seleccionadas_disp, negocios_disp, departamento_disp, plazo_meses_disp, eje_x, eje_y)
 
 # Widgets para el gráfico de barras y línea
 st.header("Gráfico de Barras y Línea")
