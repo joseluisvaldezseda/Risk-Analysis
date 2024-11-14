@@ -33,8 +33,10 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocios_seleccionados, depar
     
     # Filtrar los datos por negocios, departamento y plazo
     df_filtrado = df_combined[df_combined["NEGOCIO"].isin(negocios_seleccionados)]
-    if departamento != "Todos":
-        df_filtrado = df_filtrado[df_filtrado["DEPARTAMENTO / PRODUCTO"] == departamento]
+    if "Todos" in departamentos_seleccionados:
+        departamento_disp = "Todos"
+    else:
+        departamento_disp = departamentos_seleccionados
     if plazo_meses != "Todos":
         df_filtrado = df_filtrado[df_filtrado["PLAZO MESES"] == plazo_meses]
     
@@ -153,9 +155,9 @@ plazo_meses_disp = st.selectbox("Selecciona el plazo (en meses) para el gráfico
 if hojas_seleccionadas_disp and negocios_disp:
     df_seleccionado = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas_disp], ignore_index=True)
     departamentos_filtrados = df_seleccionado[df_seleccionado["NEGOCIO"].isin(negocios_disp)]["DEPARTAMENTO / PRODUCTO"].unique()
-    departamento_disp = st.selectbox("Selecciona el departamento para el gráfico de dispersión:", options=["Todos"] + list(departamentos_filtrados))
+    departamentos_seleccionados = st.multiselect("Selecciona los departamentos para el gráfico de dispersión:", options=["Todos"] + list(departamentos_filtrados), default="Todos")
 else:
-    departamento_disp = "Todos"
+    departamentos_seleccionados = ["Todos"]
 
 # Define las opciones limitadas para los ejes X e Y
 opciones_columnas = ["%USGAAP 90 PONDERADO", "RRR", "RRR (con margen)", "MARGEN", "TASA ACTIVA PONDERADA"]
