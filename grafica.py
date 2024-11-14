@@ -41,7 +41,7 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocios_seleccionados, depar
     df_filtrado = df_filtrado.dropna(subset=[eje_x, eje_y])
     df_filtrado = df_filtrado[(df_filtrado[eje_x] != 0) & (df_filtrado[eje_y] != 0)]
     
-    fig, ax = plt.subplots(figsize=(25, 14), dpi=800)
+    fig, ax = plt.subplots(figsize=(15, 7), dpi=800)
     
     # Graficar cada negocio con el color asignado
     for negocio in negocios_seleccionados:
