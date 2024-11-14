@@ -80,7 +80,7 @@ def crear_grafico_barras_linea(df, negocio, plazo_meses):
     df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] >= 100000]
     # Continua con el proceso de filtrado y generación del gráfico como antes
     df_filtrado = df_filtrado.dropna(subset=["RRR", "RRR (con margen)", "%USGAAP 90 PONDERADO"])
-    df_filtrado = df_filtrado[(df_filtrado["RRR"] != 0) & (df_filtrado["RRR (con margen)"] != 0)]
+    df_filtrado = df_filtrado[(df_filtrado["RRR"] != 0)]
     df_filtrado = df_filtrado.sort_values(by='RRR', ascending=False)
 
     fig, ax1 = plt.subplots(figsize=(15, 7), dpi=800)
