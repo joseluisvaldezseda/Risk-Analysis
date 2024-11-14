@@ -107,11 +107,14 @@ negocios_disp = st.multiselect("Selecciona los negocios para el gráfico de disp
 # Obtener los plazos únicos disponibles en los datos
 # Selector de plazo en meses con opción de "Todos"
 # Cambia el slider por un selectbox que incluya la opción "Todos los periodos"
-plazo_meses_disp = st.selectbox("Selecciona el plazo (en meses) para el gráfico de dispersión:", options=["Todos"] + list(range(1, 25)), index=1)
+plazo_meses_disp = st.selectbox("Selecciona el plazo (en meses) para el gráfico de dispersión:", options=["Todos"] + list(range(1, 60)), index=1)
 
-columnas_numericas = pd.concat(dfs.values(), ignore_index=True).select_dtypes(include=['float64', 'int64']).columns
-eje_x = st.selectbox("Selecciona la variable para el Eje X en el gráfico de dispersión:", columnas_numericas)
-eje_y = st.selectbox("Selecciona la variable para el Eje Y en el gráfico de dispersión:", columnas_numericas)
+# Define las opciones limitadas para los ejes X e Y
+opciones_columnas = ["%USGAAP 90 PONDERADO", "RRR", "RRR (con margen)", "MARGEN", "TASA ACTIVA PONDERADA"]
+
+# Selecciona la columna para el eje X y el eje Y, usando solo las opciones permitidas
+eje_x = st.selectbox("Selecciona la variable para el Eje X en el gráfico de dispersión:", opciones_columnas)
+eje_y = st.selectbox("Selecciona la variable para el Eje Y en el gráfico de dispersión:", opciones_columnas)
 
 # Mostrar gráfico de dispersión
 crear_grafico_dispersión(hojas_seleccionadas_disp, negocios_disp, plazo_meses_disp, eje_x, eje_y)
