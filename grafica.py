@@ -50,6 +50,7 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocios_seleccionados, depar
         color="NEGOCIO",
         size="CARTERA CAPITAL TOTAL",
         hover_name="DEPARTAMENTO / PRODUCTO",
+        text="DEPARTAMENTO / PRODUCTO",
         hover_data={
         "PLAZO MESES": True,
         "CARTERA CAPITAL TOTAL": True,
