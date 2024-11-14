@@ -16,38 +16,50 @@ dfs = {
 
 # Expandir el ancho de la aplicación en Streamlit
 st.set_page_config(layout="wide")
+# Colores personalizados para cada negocio
+colores_negocios = {
+    "EL BODEGON": "red",
+    "LA MARINA": "green",
+    "PROGRESSA": "purple"
+}
 
 # Función para crear el gráfico de dispersión
-def crear_grafico_dispersión(hojas_seleccionadas, negocio, plazo_meses, eje_x, eje_y):
+def crear_grafico_dispersión(hojas_seleccionadas, negocios_seleccionados, plazo_meses, eje_x, eje_y):
     df_combined = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas], ignore_index=True)
     
-    # Filtra los datos por negocio y por plazo, o todos los periodos
-    df_filtrado = df_combined[df_combined["NEGOCIO"] == negocio]
+    # Filtra los datos por los negocios seleccionados y por plazo, o todos los periodos
+    df_filtrado = df_combined[df_combined["NEGOCIO"].isin(negocios_seleccionados)]
     if plazo_meses != "Todos":
         df_filtrado = df_filtrado[df_filtrado["PLAZO MESES"] == plazo_meses]
+    
     # Filtra por el umbral de CARTERA CAPITAL TOTAL
     df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] >= 100000]
-    # Continua el resto de la función sin cambios
     df_filtrado = df_filtrado.dropna(subset=[eje_x, eje_y])
     df_filtrado = df_filtrado[(df_filtrado[eje_x] != 0) & (df_filtrado[eje_y] != 0)]
     
-    fig, ax = plt.subplots(figsize=(15, 7), dpi=8000)
-    sns.scatterplot(
-        x=df_filtrado[eje_x],
-        y=df_filtrado[eje_y],
-        s=df_filtrado["CARTERA CAPITAL TOTAL"] * 0.0001,  # Tamaño de puntos ajustado
-        alpha=0.5,
-        color='deepskyblue',
-        ax=ax
-    )
-    for i in range(df_filtrado.shape[0]):
-        ax.text(df_filtrado[eje_x].iloc[i], df_filtrado[eje_y].iloc[i], df_filtrado["DEPARTAMENTO / PRODUCTO"].iloc[i],
-                fontsize=4, ha='right', va='bottom', fontweight='bold', bbox=dict(facecolor='white', alpha=0.5, edgecolor='black'))
+    fig, ax = plt.subplots(figsize=(15, 7), dpi=800)
+    
+    # Graficar cada negocio con el color asignado
+    for negocio in negocios_seleccionados:
+        df_negocio = df_filtrado[df_filtrado["NEGOCIO"] == negocio]
+        sns.scatterplot(
+            x=df_negocio[eje_x],
+            y=df_negocio[eje_y],
+            s=df_negocio["CARTERA CAPITAL TOTAL"] * 0.0001,
+            alpha=0.5,
+            color=colores_negocios.get(negocio, 'blue'),  # Asigna color o azul por defecto si no está en colores_negocios
+            label=negocio,
+            ax=ax
+        )
+        # Añadir etiquetas de texto
+        for i in range(df_negocio.shape[0]):
+            ax.text(df_negocio[eje_x].iloc[i], df_negocio[eje_y].iloc[i], df_negocio["DEPARTAMENTO / PRODUCTO"].iloc[i],
+                    fontsize=4, ha='right', va='bottom', fontweight='bold', bbox=dict(facecolor='white', alpha=0.5, edgecolor='black'))
 
     ax.set_xlabel(eje_x)
     ax.set_ylabel(eje_y)
-    ax.set_title(f"Gráfico de dispersión para {negocio} - {plazo_meses} meses" if plazo_meses != "Todos" else f"Gráfico de dispersión para {negocio} - Todos los periodos")
-    ax.legend([], [], frameon=False)  # Oculta la leyenda de tamaño
+    ax.set_title(f"Gráfico de dispersión para negocios seleccionados - {plazo_meses} meses" if plazo_meses != "Todos" else "Gráfico de dispersión para negocios seleccionados - Todos los periodos")
+    ax.legend(title="Negocios")
     st.pyplot(fig)
 
 
@@ -87,7 +99,7 @@ st.title("Análisis de Cartera y Morosidad")
 # Widgets para el gráfico de dispersión
 st.header("Gráfico de Dispersión")
 hojas_seleccionadas_disp = st.multiselect("Selecciona las hojas para el gráfico de dispersión:", list(dfs.keys()), default=["TOTAL CARTERA_resumen"])
-negocios_disp = dfs["TOTAL CARTERA_resumen"]["NEGOCIO"].unique()
+negocios_disp = st.multiselect("Selecciona los negocios para el gráfico de dispersión:", options=list(colores_negocios.keys()))
 negocio_disp = st.selectbox("Selecciona el negocio para el gráfico de dispersión:", negocios_disp)
 # Obtener los plazos únicos disponibles en los datos
 # Selector de plazo en meses con opción de "Todos"
@@ -99,7 +111,7 @@ eje_x = st.selectbox("Selecciona la variable para el Eje X en el gráfico de dis
 eje_y = st.selectbox("Selecciona la variable para el Eje Y en el gráfico de dispersión:", columnas_numericas)
 
 # Mostrar gráfico de dispersión
-crear_grafico_dispersión(hojas_seleccionadas_disp, negocio_disp, plazo_meses_disp, eje_x, eje_y)
+crear_grafico_dispersión(hojas_seleccionadas_disp, negocios_disp, plazo_meses_disp, eje_x, eje_y)
 
 # Widgets para el gráfico de barras y línea
 st.header("Gráfico de Barras y Línea")
