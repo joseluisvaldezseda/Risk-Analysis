@@ -27,53 +27,49 @@ colores_negocios = {
 }
 
 def crear_grafico_dispersión(hojas_seleccionadas, negocios_seleccionados, departamento, plazo_meses, eje_x, eje_y):
+    # Combinar los datos de las hojas seleccionadas
     df_combined = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas], ignore_index=True)
     
-    # Filtra los datos por los negocios seleccionados, departamento y plazo
+    # Filtrar los datos por negocios, departamento y plazo
     df_filtrado = df_combined[df_combined["NEGOCIO"].isin(negocios_seleccionados)]
     if departamento != "Todos":
         df_filtrado = df_filtrado[df_filtrado["DEPARTAMENTO / PRODUCTO"] == departamento]
     if plazo_meses != "Todos":
         df_filtrado = df_filtrado[df_filtrado["PLAZO MESES"] == plazo_meses]
     
-    # Filtra por el umbral de CARTERA CAPITAL TOTAL y limpia datos
+    # Filtrar por el umbral de CARTERA CAPITAL TOTAL y condiciones adicionales
     df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] >= 100000]
     df_filtrado = df_filtrado[df_filtrado["TASA"] == "CON TASA"]
     df_filtrado = df_filtrado.dropna(subset=[eje_x, eje_y])
     df_filtrado = df_filtrado[(df_filtrado[eje_x] != 0) & (df_filtrado[eje_y] != 0)]
-
-    # Crea gráfico de dispersión interactivo con plotly
+    
+    # Crear gráfico de dispersión interactivo con etiquetas visibles
     fig = px.scatter(
-        df_filtrado, 
-        x=eje_x, 
+        df_filtrado,
+        x=eje_x,
         y=eje_y,
-        color="NEGOCIO",
         size="CARTERA CAPITAL TOTAL",
-        hover_name="DEPARTAMENTO / PRODUCTO",
-        text="DEPARTAMENTO / PRODUCTO",
-        hover_data={
-        "PLAZO MESES": True,
-        "CARTERA CAPITAL TOTAL": True,
-        eje_x: True,
-        eje_y: True
-    },
+        color="NEGOCIO",
         color_discrete_map=colores_negocios,
+        hover_name="DEPARTAMENTO / PRODUCTO",
+        text="DEPARTAMENTO / PRODUCTO",  # Agregar etiquetas estáticas
         title=f"Gráfico de dispersión para negocios seleccionados - {plazo_meses} meses" if plazo_meses != "Todos" else "Gráfico de dispersión para negocios seleccionados - Todos los periodos"
-
     )
-
-      # Ajustes de la visualización
+    
+    # Ajustes de la visualización
     fig.update_traces(
         textposition='middle right',  # Posición de las etiquetas a la derecha del círculo
-        textfont=dict(size=6),        # Tamaño de la etiqueta
+        textfont=dict(size=8),        # Tamaño de la etiqueta
         marker=dict(opacity=0.6, line=dict(width=1, color='DarkSlateGrey'))
+    )
     fig.update_layout(
         xaxis_title=eje_x,
         yaxis_title=eje_y,
         legend_title="Negocios",
-        template="simple_white"
+        height=700
     )
-
+    
+    # Mostrar el gráfico en Streamlit
     st.plotly_chart(fig)
 
 
