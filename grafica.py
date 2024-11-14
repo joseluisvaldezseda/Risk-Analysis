@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+
 
 # Configurar estilo de Seaborn
 sns.set_theme(style="white")
