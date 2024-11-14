@@ -100,7 +100,6 @@ st.title("Análisis de Cartera y Morosidad")
 st.header("Gráfico de Dispersión")
 hojas_seleccionadas_disp = st.multiselect("Selecciona las hojas para el gráfico de dispersión:", list(dfs.keys()), default=["TOTAL CARTERA_resumen"])
 negocios_disp = st.multiselect("Selecciona los negocios para el gráfico de dispersión:", options=list(colores_negocios.keys()))
-negocio_disp = st.selectbox("Selecciona el negocio para el gráfico de dispersión:", negocios_disp)
 # Obtener los plazos únicos disponibles en los datos
 # Selector de plazo en meses con opción de "Todos"
 # Cambia el slider por un selectbox que incluya la opción "Todos los periodos"
