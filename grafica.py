@@ -62,6 +62,12 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocios_seleccionados, depar
 
     )
 
+      # Ajustes de la visualización
+    fig.update_traces(
+        textposition='middle right',  # Posición de las etiquetas a la derecha del círculo
+        textfont=dict(size=6),        # Tamaño de la etiqueta
+        marker=dict(opacity=0.6, line=dict(width=1, color='DarkSlateGrey')
+                   )
     fig.update_layout(
         xaxis_title=eje_x,
         yaxis_title=eje_y,
