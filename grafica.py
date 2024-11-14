@@ -138,7 +138,7 @@ def crear_grafico_barras_linea(df, negocio, plazo_meses):
     # Mostrar el gráfico en Streamlit
     st.plotly_chart(fig)
 # Título de la aplicación
-st.title("Análisis de Cartera y Morosidad")
+st.title("Análisis de RRR y Morosidad")
 
 # Widgets para el gráfico de dispersión
 st.header("Gráfico de Dispersión")
