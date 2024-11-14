@@ -59,7 +59,9 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocios_seleccionados, plazo
     ax.set_xlabel(eje_x)
     ax.set_ylabel(eje_y)
     ax.set_title(f"Gráfico de dispersión para negocios seleccionados - {plazo_meses} meses" if plazo_meses != "Todos" else "Gráfico de dispersión para negocios seleccionados - Todos los periodos")
-    ax.legend(title="Negocios")
+
+    handles = [mpatches.Patch(color=color, label=negocio) for negocio, color in colores_negocios.items() if negocio in negocios_seleccionados]
+    ax.legend(handles=handles, title="Negocios", loc='upper right', markerscale=0.5)
     st.pyplot(fig)
 
 
