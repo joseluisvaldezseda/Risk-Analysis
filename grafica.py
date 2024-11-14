@@ -61,6 +61,7 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocios_seleccionados, depar
         },
         text="DEPARTAMENTO / PRODUCTO",  # Agregar etiquetas estáticas
         title=f"Gráfico de dispersión para negocios seleccionados - {plazo_meses} meses" if plazo_meses != "Todos" else "Gráfico de dispersión para negocios seleccionados - Todos los periodos"
+        size_max=50  # Ajusta este valor para incrementar el tamaño máximo de los círculos
     )
     
     # Ajustes de la visualización
