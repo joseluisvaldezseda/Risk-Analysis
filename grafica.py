@@ -27,16 +27,14 @@ colores_negocios = {
     "PROGRESSA": "purple"
 }
 
-def crear_grafico_dispersión(hojas_seleccionadas, negocios_seleccionados, departamento_seleccionados, plazo_meses, eje_x, eje_y):
+def crear_grafico_dispersión(hojas_seleccionadas, negocios_seleccionados, departamento, plazo_meses, eje_x, eje_y):
     # Combinar los datos de las hojas seleccionadas
     df_combined = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas], ignore_index=True)
     
     # Filtrar los datos por negocios, departamento y plazo
     df_filtrado = df_combined[df_combined["NEGOCIO"].isin(negocios_seleccionados)]
-    if "Todos" in departamentos_seleccionados:
-        departamento_disp = "Todos"
-    else:
-        departamento_disp = departamentos_seleccionados
+    if departamento != "Todos":
+        df_filtrado = df_filtrado[df_filtrado["DEPARTAMENTO / PRODUCTO"].isin(departamento)]
     if plazo_meses != "Todos":
         df_filtrado = df_filtrado[df_filtrado["PLAZO MESES"] == plazo_meses]
     
@@ -152,6 +150,7 @@ negocios_disp = st.multiselect("Selecciona los negocios para el gráfico de disp
 # Cambia el slider por un selectbox que incluya la opción "Todos los periodos"
 plazo_meses_disp = st.selectbox("Selecciona el plazo (en meses) para el gráfico de dispersión:", options=["Todos"] + list(range(1, 60)), index=1)
 # Filtro dinámico de departamentos en función de los negocios y las hojas seleccionadas
+# Filtro dinámico de departamentos en función de los negocios y las hojas seleccionadas
 if hojas_seleccionadas_disp and negocios_disp:
     df_seleccionado = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas_disp], ignore_index=True)
     departamentos_filtrados = df_seleccionado[df_seleccionado["NEGOCIO"].isin(negocios_disp)]["DEPARTAMENTO / PRODUCTO"].unique()
@@ -159,6 +158,11 @@ if hojas_seleccionadas_disp and negocios_disp:
 else:
     departamentos_seleccionados = ["Todos"]
 
+# Modificar el filtro en función de la selección múltiple de departamentos
+if "Todos" in departamentos_seleccionados:
+    departamento_disp = "Todos"
+else:
+    departamento_disp = departamentos_seleccionados
 # Define las opciones limitadas para los ejes X e Y
 opciones_columnas = ["%USGAAP 90 PONDERADO", "RRR", "RRR (con margen)", "MARGEN", "TASA ACTIVA PONDERADA"]
 
