@@ -72,7 +72,7 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
             ),
             fig.update_traces(
     hovertemplate=None  # Quita el hovertemplate personalizado
-),
+)
             textfont=dict(
         size=8  # Cambia el tamaño del texto aquí (valores más pequeños para texto más pequeño)
     ),
