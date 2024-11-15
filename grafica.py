@@ -34,6 +34,10 @@ colores_negocios_variantes = {
 
 def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionados, departamento, plazo_meses, eje_x, ejes_y):
     # Combinar los datos de las hojas seleccionadas
+    if not negocios_seleccionados:
+        st.warning("Por favor, selecciona al menos un negocio para generar el gráfico.")
+        return
+    
 
     df_combined = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas], ignore_index=True)
     
