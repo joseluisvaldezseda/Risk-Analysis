@@ -64,12 +64,7 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
             marker=dict(size=df_filtrado_var["CARTERA CAPITAL TOTAL"] / 1000000, opacity=0.6, color=color, line=dict(width=1, color='DarkSlateGrey')),
             text=df_filtrado_var["DEPARTAMENTO / PRODUCTO"],
             name=eje_y,  # Nombre del eje Y actual
-            hover_data={
-            "PLAZO MESES": True,
-            "CARTERA CAPITAL TOTAL": True,
-            eje_x: True,
-            eje_y: True
-        },
+        
             textfont=dict(
         size=8  # Cambia el tamaño del texto aquí (valores más pequeños para texto más pequeño)
     ),
