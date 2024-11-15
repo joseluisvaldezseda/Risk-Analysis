@@ -22,21 +22,17 @@ dfs = {
 # Expandir el ancho de la aplicación en Streamlit
 st.set_page_config(layout="wide")
 # Colores personalizados para cada negocio
-colores_negocios = {
-    "EL BODEGON": "red",
-    "LA MARINA": "green",
-    "PROGRESSA": "purple"
+# Colores específicos y sus variantes para cada negocio
+colores_negocios_variantes = {
+    "EL BODEGON": ["#FF0000", "#FF6666", "#FF9999"],  # Variantes de rojo
+    "LA MARINA": ["#00FF00", "#66FF66", "#99FF99"],   # Variantes de verde
+    "PROGRESSA": ["#800080", "#B266B2", "#D9B3D9"]    # Variantes de morado
 }
 
 
 
 
 def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionados, departamento, plazo_meses, eje_x, ejes_y):
-
-    def generar_color_aleatorio():
-         """Genera un color aleatorio en formato hexadecimal."""
-         return f"#{random.randint(0, 0xFFFFFF):06x}"
-    
     # Combinar los datos de las hojas seleccionadas
     df_combined = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas], ignore_index=True)
     
@@ -57,8 +53,10 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
     fig = go.Figure()
     
     # Agregar una traza por cada eje Y seleccionado
-    for eje_y in ejes_y:
-        color = generar_color_aleatorio()  # Generar un color aleatorio
+    for i, eje_y in enumerate(ejes_y):
+        color_index = i % len(colores_negocios_variantes[negocios_seleccionados[0]])  # Seleccionar un color basado en el índice
+        color = colores_negocios_variantes[negocios_seleccionados[0]][color_index]  # Asignar el color fijo y su variante
+
         df_filtrado_var = df_filtrado[df_filtrado[eje_y] != 0]  # Filtrar valores cero en el eje Y actual
         # Crear un texto para el hover con la información adicional
         hover_text = (
@@ -74,11 +72,8 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
             marker=dict(size=df_filtrado_var["CARTERA CAPITAL TOTAL"] / 1000000, opacity=0.6, color=color, line=dict(width=1, color='DarkSlateGrey')),
             text=df_filtrado_var["DEPARTAMENTO / PRODUCTO"],
             name=eje_y,  # Nombre del eje Y actual
-        
-            textfont=dict(
-        size=8  # Cambia el tamaño del texto aquí (valores más pequeños para texto más pequeño)
-    ),
-    textposition='middle right'  # Cambia la posición del texto si es necesario
+            textfont=dict(size=8),
+            textposition='middle right'
         ))
     
     # Configuración del diseño
