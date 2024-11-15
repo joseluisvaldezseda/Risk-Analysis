@@ -156,7 +156,26 @@ opciones_columnas = ["%USGAAP 90 PONDERADO", "RRR", "RRR (con margen)", "MARGEN"
 
 # Selecciona la columna para el eje X y el eje Y, usando solo las opciones permitidas
 eje_x = st.selectbox("Selecciona la variable para el Eje X:", opciones_columnas)
-ejes_y = st.multiselect("Selecciona las variables para el Eje Y:", opciones_columnas, default=[eje_y])
+# Filtro dinámico de departamentos en función de los negocios y las hojas seleccionadas
+if hojas_seleccionadas_disp and negocios_disp:
+    df_seleccionado = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas_disp], ignore_index=True)
+    departamentos_filtrados = df_seleccionado[df_seleccionado["NEGOCIO"].isin(negocios_disp)]["DEPARTAMENTO / PRODUCTO"].unique()
+    departamentos_seleccionados = st.multiselect("Selecciona los departamentos para el gráfico de dispersión:", options=["Todos"] + list(departamentos_filtrados), default=["Todos"])
+    
+    # Verifica si se seleccionó "Todos"
+    if "Todos" in departamentos_seleccionados:
+        departamento_disp = "Todos"
+    else:
+        departamento_disp = departamentos_seleccionados
+else:
+    departamento_disp = "Todos"  # Valor predeterminado si no hay selección de hojas o negocios
+
+# Verifica que haya al menos un negocio y una hoja seleccionados antes de llamar a la función
+if hojas_seleccionadas_disp and negocios_disp:
+    # Mostrar gráfico de dispersión
+    crear_grafico_dispersión(hojas_seleccionadas_disp, negocios_disp, departamento_disp, plazo_meses_disp, eje_x, eje_y)
+else:
+    st.warning("Por favor, selecciona al menos una hoja y un negocio para generar el gráfico.")
 
 # Mostrar gráfico de dispersión
 crear_grafico_dispersión_extendido(hojas_seleccionadas_disp, negocios_disp, departamento_disp, plazo_meses_disp, eje_x, ejes_y)
