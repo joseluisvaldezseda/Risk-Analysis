@@ -33,12 +33,12 @@ colores_negocios_variantes = {
 
 
 def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionados, departamento, plazo_meses, eje_x, ejes_y):
-    # Combinar los datos de las hojas seleccionadas
+    # Verificar que al menos un negocio esté seleccionado
     if not negocios_seleccionados:
         st.warning("Por favor, selecciona al menos un negocio para generar el gráfico.")
         return
     
-
+    # Combinar los datos de las hojas seleccionadas
     df_combined = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas], ignore_index=True)
     
     # Filtrar los datos por negocios, departamento y plazo
@@ -57,29 +57,30 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
     # Crear gráfico de dispersión interactivo con múltiples trazas
     fig = go.Figure()
     
-    # Agregar una traza por cada eje Y seleccionado
-    for i, eje_y in enumerate(ejes_y):
-        color_index = i % len(colores_negocios_variantes[negocios_seleccionados[0]])  # Seleccionar un color basado en el índice
-        color = colores_negocios_variantes[negocios_seleccionados[0]][color_index]  # Asignar el color fijo y su variante
+    # Agregar una traza por cada negocio y cada eje Y seleccionado
+    for negocio in negocios_seleccionados:
+        for i, eje_y in enumerate(ejes_y):
+            color_index = i % len(colores_negocios_variantes[negocio])  # Seleccionar un color basado en el índice
+            color = colores_negocios_variantes[negocio][color_index]    # Asignar el color según el negocio y su variante
 
-        df_filtrado_var = df_filtrado[df_filtrado[eje_y] != 0]  # Filtrar valores cero en el eje Y actual
-        # Crear un texto para el hover con la información adicional
-        hover_text = (
-            "Departamento/Producto: " + df_filtrado_var["DEPARTAMENTO / PRODUCTO"].astype(str) + "<br>" +
-            "Cartera Capital Total: $" + df_filtrado_var["CARTERA CAPITAL TOTAL"].apply(lambda x: f"{x:,.2f}") + "<br>" +
-            "Plazo Meses: " + df_filtrado_var["PLAZO MESES"].astype(str)
-        )
-        fig.add_trace(go.Scatter(
-            x=df_filtrado_var[eje_x],
-            y=df_filtrado_var[eje_y],
-            mode='markers+text',
-            hovertext=hover_text,  # Agregar el texto para hover
-            marker=dict(size=df_filtrado_var["CARTERA CAPITAL TOTAL"] / 1000000, opacity=0.6, color=color, line=dict(width=1, color='DarkSlateGrey')),
-            text=df_filtrado_var["DEPARTAMENTO / PRODUCTO"],
-            name=eje_y,  # Nombre del eje Y actual
-            textfont=dict(size=6),
-            textposition='middle right'
-        ))
+            df_filtrado_var = df_filtrado[(df_filtrado["NEGOCIO"] == negocio) & (df_filtrado[eje_y] != 0)]  # Filtrar valores cero en el eje Y actual
+            # Crear un texto para el hover con la información adicional
+            hover_text = (
+                "Departamento/Producto: " + df_filtrado_var["DEPARTAMENTO / PRODUCTO"].astype(str) + "<br>" +
+                "Cartera Capital Total: $" + df_filtrado_var["CARTERA CAPITAL TOTAL"].apply(lambda x: f"{x:,.2f}") + "<br>" +
+                "Plazo Meses: " + df_filtrado_var["PLAZO MESES"].astype(str)
+            )
+            fig.add_trace(go.Scatter(
+                x=df_filtrado_var[eje_x],
+                y=df_filtrado_var[eje_y],
+                mode='markers+text',
+                hovertext=hover_text,  # Agregar el texto para hover
+                marker=dict(size=df_filtrado_var["CARTERA CAPITAL TOTAL"] / 1000000, opacity=0.6, color=color, line=dict(width=1, color='DarkSlateGrey')),
+                text=df_filtrado_var["DEPARTAMENTO / PRODUCTO"],
+                name=f"{negocio} - {eje_y}",  # Nombre del eje Y actual incluyendo el negocio
+                textfont=dict(size=6),
+                textposition='middle right'
+            ))
     
     # Configuración del diseño
     fig.update_layout(
