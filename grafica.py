@@ -175,7 +175,7 @@ crear_grafico_dispersión(hojas_seleccionadas_disp, negocios_disp, departamento_
 
 # Widgets para el gráfico de barras y línea
 st.header("Gráfico de Barras y Línea")
-hoja_seleccionada_barras = st.selectbox("Selecciona la hoja para el gráfico de barras y línea:", list(dfs.keys()))
+hoja_seleccionada_barras = st.selectbox("Selecciona la hoja:", list(dfs.keys()))
 
 # Carga directamente el DataFrame sin usar pd.concat
 df_barras = dfs[hoja_seleccionada_barras]
