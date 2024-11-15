@@ -180,8 +180,8 @@ hoja_seleccionada_barras = st.selectbox("Selecciona la hoja para el gráfico de 
 # Carga directamente el DataFrame sin usar pd.concat
 df_barras = dfs[hoja_seleccionada_barras]
 negocios_barras = dfs["TOTAL CARTERA_resumen"]["NEGOCIO"].unique()
-negocio_barras = st.selectbox("Selecciona el negocio para el gráfico de barras y línea:", negocios_barras)
-plazo_meses_barras = st.selectbox("Selecciona el plazo (en meses) para el gráfico de barras y línea:", options=["Todos"] + list(range(1, 25)), index=1)
+negocio_barras = st.selectbox("Selecciona el negocio:", negocios_barras)
+plazo_meses_barras = st.selectbox("Selecciona el plazo (en meses):", options=["Todos"] + list(range(1, 25)), index=1)
 
 
 #df_barras = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas_barras], ignore_index=True)
