@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import plotly.graph_objects as go
 import plotly.express as px
+import random
 
 
 # Configurar estilo de Seaborn
@@ -27,7 +28,12 @@ colores_negocios = {
     "PROGRESSA": "purple"
 }
 
-def crear_grafico_dispersión(hojas_seleccionadas, negocios_seleccionados, departamento, plazo_meses, eje_x, eje_y):
+def generar_color_aleatorio():
+    """Genera un color aleatorio en formato hexadecimal."""
+    return f"#{random.randint(0, 0xFFFFFF):06x}"
+
+
+def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionados, departamento, plazo_meses, eje_x, ejes_y):
     # Combinar los datos de las hojas seleccionadas
     df_combined = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas], ignore_index=True)
     
@@ -41,40 +47,38 @@ def crear_grafico_dispersión(hojas_seleccionadas, negocios_seleccionados, depar
     # Filtrar por el umbral de CARTERA CAPITAL TOTAL y condiciones adicionales
     df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] >= 100000]
     df_filtrado = df_filtrado[df_filtrado["TASA"] == "CON TASA"]
-    df_filtrado = df_filtrado.dropna(subset=[eje_x, eje_y])
-    df_filtrado = df_filtrado[(df_filtrado[eje_x] != 0) & (df_filtrado[eje_y] != 0)]
+    df_filtrado = df_filtrado.dropna(subset=[eje_x] + ejes_y)
+    df_filtrado = df_filtrado[(df_filtrado[eje_x] != 0)]
     
-    # Crear gráfico de dispersión interactivo con etiquetas visibles
-    fig = px.scatter(
-        df_filtrado,
-        x=eje_x,
-        y=eje_y,
-        size="CARTERA CAPITAL TOTAL",
-        color="NEGOCIO",
-        color_discrete_map=colores_negocios,
-        hover_name="DEPARTAMENTO / PRODUCTO",
-        hover_data={
-            "PLAZO MESES": True,
-            "CARTERA CAPITAL TOTAL": True,
-            eje_x: True,
-            eje_y: True
-        },
-        text="DEPARTAMENTO / PRODUCTO",  # Agregar etiquetas estáticas
-        title=f"Gráfico de dispersión para negocios seleccionados - {plazo_meses} meses" if plazo_meses != "Todos" else "Gráfico de dispersión para negocios seleccionados - Todos los periodos",
-        size_max=50  # Ajusta este valor para incrementar el tamaño máximo de los círculos
-    )
+    # Crear gráfico de dispersión interactivo con múltiples trazas
+    fig = go.Figure()
     
-    # Ajustes de la visualización
-    fig.update_traces(
-        textposition='middle right',  # Posición de las etiquetas a la derecha del círculo
-        textfont=dict(size=8),        # Tamaño de la etiqueta
-        marker=dict(opacity=0.6, line=dict(width=1, color='DarkSlateGrey'))
-    )
+    # Agregar una traza por cada eje Y seleccionado
+    for eje_y in ejes_y:
+        color = generar_color_aleatorio()  # Generar un color aleatorio
+        df_filtrado_var = df_filtrado[df_filtrado[eje_y] != 0]  # Filtrar valores cero en el eje Y actual
+        fig.add_trace(go.Scatter(
+            x=df_filtrado_var[eje_x],
+            y=df_filtrado_var[eje_y],
+            mode='markers+text',
+            marker=dict(size=df_filtrado_var["CARTERA CAPITAL TOTAL"] / 10000, opacity=0.6, color=color, line=dict(width=1, color='DarkSlateGrey')),
+            text=df_filtrado_var["DEPARTAMENTO / PRODUCTO"],
+            name=eje_y,  # Nombre del eje Y actual
+            hovertemplate=(
+                f"<b>Departamento:</b> {{text}}<br>"
+                f"<b>{eje_x}:</b> {{x}}<br>"
+                f"<b>{eje_y}:</b> {{y}}<br>"
+                f"<b>Cartera Capital Total:</b> {{marker.size}}"
+            )
+        ))
+    
+    # Configuración del diseño
     fig.update_layout(
+        title="Gráfico de dispersión con múltiples variables en el eje Y",
         xaxis_title=eje_x,
-        yaxis_title=eje_y,
-        legend_title="Negocios",
-        height=650
+        yaxis_title="Valores de las variables seleccionadas",
+        legend_title="Variables del eje Y",
+        height=700,
     )
     
     # Mostrar el gráfico en Streamlit
@@ -168,10 +172,13 @@ opciones_columnas = ["%USGAAP 90 PONDERADO", "RRR", "RRR (con margen)", "MARGEN"
 
 # Selecciona la columna para el eje X y el eje Y, usando solo las opciones permitidas
 eje_x = st.selectbox("Selecciona la variable para el Eje X:", opciones_columnas)
-eje_y = st.selectbox("Selecciona la variable para el Eje Y:", opciones_columnas)
+ejes_y = st.multiselect("Selecciona las variables para el Eje Y (puedes elegir varias):", opciones_columnas, default=[opciones_columnas[0]])
 
-# Mostrar gráfico de dispersión
-crear_grafico_dispersión(hojas_seleccionadas_disp, negocios_disp, departamento_disp, plazo_meses_disp, eje_x, eje_y)
+# Mostrar gráfico de dispersión con múltiples ejes Y
+if ejes_y:
+    crear_grafico_dispersión_multiple(hojas_seleccionadas_disp, negocios_disp, departamento_disp, plazo_meses_disp, eje_x, ejes_y)
+else:
+    st.warning("Por favor, selecciona al menos una variable para el eje Y.")
 
 # Widgets para el gráfico de barras y línea
 st.header("Gráfico de Barras y Línea")
