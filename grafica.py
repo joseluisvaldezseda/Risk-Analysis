@@ -143,18 +143,18 @@ st.title("Análisis de RRR y Morosidad")
 
 # Widgets para el gráfico de dispersión
 st.header("Gráfico de Dispersión")
-hojas_seleccionadas_disp = st.multiselect("Selecciona las hojas para el gráfico de dispersión:", list(dfs.keys()), default=["TOTAL CARTERA_resumen"])
-negocios_disp = st.multiselect("Selecciona los negocios para el gráfico de dispersión:", options=list(colores_negocios.keys()))
+hojas_seleccionadas_disp = st.multiselect("Selecciona las hojas:", list(dfs.keys()), default=["TOTAL CARTERA_resumen"])
+negocios_disp = st.multiselect("Selecciona los negocios:", options=list(colores_negocios.keys()))
 # Obtener los plazos únicos disponibles en los datos
 # Selector de plazo en meses con opción de "Todos"
 # Cambia el slider por un selectbox que incluya la opción "Todos los periodos"
-plazo_meses_disp = st.selectbox("Selecciona el plazo (en meses) para el gráfico de dispersión:", options=["Todos"] + list(range(1, 60)), index=1)
+plazo_meses_disp = st.selectbox("Selecciona el plazo (en meses):", options=["Todos"] + list(range(1, 60)), index=1)
 # Filtro dinámico de departamentos en función de los negocios y las hojas seleccionadas
 # Filtro dinámico de departamentos en función de los negocios y las hojas seleccionadas
 if hojas_seleccionadas_disp and negocios_disp:
     df_seleccionado = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas_disp], ignore_index=True)
     departamentos_filtrados = df_seleccionado[df_seleccionado["NEGOCIO"].isin(negocios_disp)]["DEPARTAMENTO / PRODUCTO"].unique()
-    departamentos_seleccionados = st.multiselect("Selecciona los departamentos para el gráfico de dispersión:", options=["Todos"] + list(departamentos_filtrados), default="Todos")
+    departamentos_seleccionados = st.multiselect("Selecciona los departamentos:", options=["Todos"] + list(departamentos_filtrados), default="Todos")
 else:
     departamentos_seleccionados = ["Todos"]
 
@@ -167,8 +167,8 @@ else:
 opciones_columnas = ["%USGAAP 90 PONDERADO", "RRR", "RRR (con margen)", "MARGEN", "TASA ACTIVA PONDERADA"]
 
 # Selecciona la columna para el eje X y el eje Y, usando solo las opciones permitidas
-eje_x = st.selectbox("Selecciona la variable para el Eje X en el gráfico de dispersión:", opciones_columnas)
-eje_y = st.selectbox("Selecciona la variable para el Eje Y en el gráfico de dispersión:", opciones_columnas)
+eje_x = st.selectbox("Selecciona la variable para el Eje X:", opciones_columnas)
+eje_y = st.selectbox("Selecciona la variable para el Eje Y:", opciones_columnas)
 
 # Mostrar gráfico de dispersión
 crear_grafico_dispersión(hojas_seleccionadas_disp, negocios_disp, departamento_disp, plazo_meses_disp, eje_x, eje_y)
