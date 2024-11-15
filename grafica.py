@@ -23,17 +23,18 @@ dfs = {
 st.set_page_config(layout="wide")
 # Colores personalizados para cada negocio
 # Colores específicos y sus variantes para cada negocio
-colores_negocios_variantes = {
-    "EL BODEGON": ["#FF0000", "#FF6666", "#FF9999"],  # Variantes de rojo
-    "LA MARINA": ["#00FF00", "#66FF66", "#99FF99"],   # Variantes de verde
-    "PROGRESSA": ["#800080", "#B266B2", "#D9B3D9"]    # Variantes de morado
-}
+
 
 
 
 
 def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionados, departamento, plazo_meses, eje_x, ejes_y):
     # Combinar los datos de las hojas seleccionadas
+    colores_negocios_variantes = {
+    "EL BODEGON": ["#FF0000", "#FF6666", "#FF9999"],  # Variantes de rojo
+    "LA MARINA": ["#00FF00", "#66FF66", "#99FF99"],   # Variantes de verde
+    "PROGRESSA": ["#800080", "#B266B2", "#D9B3D9"]    # Variantes de morado
+}
     df_combined = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas], ignore_index=True)
     
     # Filtrar los datos por negocios, departamento y plazo
