@@ -34,8 +34,8 @@ colores_negocios = {
 def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionados, departamento, plazo_meses, eje_x, ejes_y):
 
     def generar_color_aleatorio():
-    """Genera un color aleatorio en formato hexadecimal."""
-    return f"#{random.randint(0, 0xFFFFFF):06x}"
+         """Genera un color aleatorio en formato hexadecimal."""
+         return f"#{random.randint(0, 0xFFFFFF):06x}"
     
     # Combinar los datos de las hojas seleccionadas
     df_combined = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas], ignore_index=True)
