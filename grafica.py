@@ -25,7 +25,7 @@ st.set_page_config(layout="wide")
 # Colores específicos y sus variantes para cada negocio
 
 
-colores_negocios = {
+colores_negocios_variantes = {
     "EL BODEGON": ["#FF0000", "#FF6666", "#FF9999"],  # Variantes de rojo
     "LA MARINA": ["#00FF00", "#66FF66", "#99FF99"],   # Variantes de verde
     "PROGRESSA": ["#800080", "#B266B2", "#D9B3D9"]    # Variantes de morado
@@ -153,7 +153,7 @@ st.title("Análisis de RRR y Morosidad")
 # Widgets para el gráfico de dispersión
 st.header("Gráfico de Dispersión")
 hojas_seleccionadas_disp = st.multiselect("Selecciona las hojas:", list(dfs.keys()), default=["TOTAL CARTERA_resumen"])
-negocios_disp = st.multiselect("Selecciona los negocios:", options=list(colores_negocios.keys()))
+negocios_disp = st.multiselect("Selecciona los negocios:", options=list(colores_negocios_variantes.keys()))
 # Obtener los plazos únicos disponibles en los datos
 # Selector de plazo en meses con opción de "Todos"
 # Cambia el slider por un selectbox que incluya la opción "Todos los periodos"
