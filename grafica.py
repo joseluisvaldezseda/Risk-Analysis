@@ -69,7 +69,11 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
                 f"<b>{eje_x}:</b> {{x}}<br>"
                 f"<b>{eje_y}:</b> {{y}}<br>"
                 f"<b>Cartera Capital Total:</b> {{marker.size}}"
-            )
+            ),
+            textfont=dict(
+        size=8  # Cambia el tamaño del texto aquí (valores más pequeños para texto más pequeño)
+    ),
+    textposition='middle right'  # Cambia la posición del texto si es necesario
         ))
     
     # Configuración del diseño
