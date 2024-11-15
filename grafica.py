@@ -60,6 +60,12 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
     for eje_y in ejes_y:
         color = generar_color_aleatorio()  # Generar un color aleatorio
         df_filtrado_var = df_filtrado[df_filtrado[eje_y] != 0]  # Filtrar valores cero en el eje Y actual
+        # Crear un texto para el hover con la información adicional
+        hover_text = (
+            "Departamento/Producto: " + df_filtrado_var["DEPARTAMENTO / PRODUCTO"].astype(str) + "<br>" +
+            "Cartera Capital Total: " + df_filtrado_var["CARTERA CAPITAL TOTAL"].astype(str) + "<br>" +
+            "Plazo Meses: " + df_filtrado_var["PLAZO MESES"].astype(str)
+        )
         fig.add_trace(go.Scatter(
             x=df_filtrado_var[eje_x],
             y=df_filtrado_var[eje_y],
