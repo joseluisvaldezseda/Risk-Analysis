@@ -77,7 +77,7 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
             marker=dict(size=df_filtrado_var["CARTERA CAPITAL TOTAL"] / 1000000, opacity=0.6, color=color, line=dict(width=1, color='DarkSlateGrey')),
             text=df_filtrado_var["DEPARTAMENTO / PRODUCTO"],
             name=eje_y,  # Nombre del eje Y actual
-            textfont=dict(size=8),
+            textfont=dict(size=6),
             textposition='middle right'
         ))
     
