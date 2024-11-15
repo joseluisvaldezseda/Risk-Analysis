@@ -64,15 +64,7 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
             marker=dict(size=df_filtrado_var["CARTERA CAPITAL TOTAL"] / 1000000, opacity=0.6, color=color, line=dict(width=1, color='DarkSlateGrey')),
             text=df_filtrado_var["DEPARTAMENTO / PRODUCTO"],
             name=eje_y,  # Nombre del eje Y actual
-            hovertemplate=(
-                f"<b>Departamento:</b> {{text}}<br>"
-                f"<b>{eje_x}:</b> {{x}}<br>"
-                f"<b>{eje_y}:</b> {{y}}<br>"
-                f"<b>Cartera Capital Total:</b> {{marker.size}}"
-            ),
-            fig.update_traces(
-    hovertemplate=None  # Quita el hovertemplate personalizado
-)
+ 
             textfont=dict(
         size=8  # Cambia el tamaño del texto aquí (valores más pequeños para texto más pequeño)
     ),
