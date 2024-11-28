@@ -82,7 +82,7 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
             hover_text = (
                 "Departamento/Producto: " + df_filtrado_var["DEPARTAMENTO / PRODUCTO"].astype(str) + "<br>" +
                 "Cartera Capital Total: $" + df_filtrado_var["CARTERA CAPITAL TOTAL"].apply(lambda x: f"{x:,.2f}") + "<br>" +
-                "Plazo Meses: " + df_filtrado_var["PLAZO MESES"].astype(str)
+                #"Plazo Meses: " + df_filtrado_var["PLAZO MESES"].astype(str)
             )
             fig.add_trace(go.Scatter(
                 x=df_filtrado_var[eje_x],
