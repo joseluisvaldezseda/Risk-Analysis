@@ -50,7 +50,7 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
     # Calcular promedio ponderado si se selecciona "Todos" los departamentos
     if departamento == "Todos":
         df_filtrado = (
-            df_filtrado.groupby(['NEGOCIO', 'TASA', 'RETAIL/PF/MKP', 'MARGEN'])
+            df_filtrado.groupby(['NEGOCIO', 'DEPARTAMENTO / PRODUCTO' , 'ID DEPTO' , 'TASA', 'RETAIL/PF/MKP', 'MARGEN'])
             .apply(lambda x: pd.Series({
                 'CARTERA CAPITAL TOTAL': x['CARTERA CAPITAL TOTAL'].sum(),
                 'TASA ACTIVA PONDERADA': (x['TASA ACTIVA PONDERADA'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum(),
