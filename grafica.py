@@ -47,7 +47,21 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
         df_filtrado = df_filtrado[df_filtrado["DEPARTAMENTO / PRODUCTO"].isin(departamento)]
     if plazo_meses != "Todos":
         df_filtrado = df_filtrado[df_filtrado["PLAZO MESES"] == plazo_meses]
-    
+    # Calcular promedio ponderado si se selecciona "Todos" los departamentos
+    if departamento == "Todos":
+        df_filtrado = (
+            df_filtrado.groupby(['NEGOCIO', 'TASA', 'RETAIL/PF/MKP', 'MARGEN'])
+            .apply(lambda x: pd.Series({
+                'CARTERA CAPITAL TOTAL': x['CARTERA CAPITAL TOTAL'].sum(),
+                'TASA ACTIVA PONDERADA': (x['TASA ACTIVA PONDERADA'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum(),
+                '$ USGAAP 60 TOTAL': x['$ USGAAP 60 TOTAL'].sum(),
+                '$ USGAAP 90 TOTAL': x['$ USGAAP 90 TOTAL'].sum(),
+                '%USGAAP 90 PONDERADO': (x['%USGAAP 90 PONDERADO'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum(),
+                'RRR': (x['RRR'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum()
+                'RRR (con margen)': (x['RRR (con margen)'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum()
+            }))
+            .reset_index()
+        )
     # Filtrar por el umbral de CARTERA CAPITAL TOTAL y condiciones adicionales
     df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] >= 100000]
     df_filtrado = df_filtrado[df_filtrado["TASA"] == "CON TASA"]
