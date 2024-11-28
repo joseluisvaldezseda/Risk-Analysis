@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import seaborn as sns
+import io  # Para manejar streams de memoria
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import plotly.graph_objects as go
@@ -147,11 +148,23 @@ def crear_grafico_barras_linea(df, negocio, plazo_meses):
         height=700
     )
     
+    
     fig.update_traces(textfont_size=10)
     fig.update_xaxes(tickangle=80)
     
     # Mostrar el gráfico en Streamlit
     st.plotly_chart(fig)
+    # Botón para descargar los datos filtrados
+    if not df_filtrado.empty:
+        csv = df_filtrado.to_csv(index=False).encode('utf-8')
+        st.download_button(
+            label="Descargar datos filtrados",
+            data=csv,
+            file_name="datos_filtrados.csv",
+            mime="text/csv"
+        )
+
+
 # Título de la aplicación
 st.title("Análisis de RRR y Morosidad")
 
