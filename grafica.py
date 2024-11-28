@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import seaborn as sns
-import io  # Para manejar streams de memoria
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import plotly.graph_objects as go
