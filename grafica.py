@@ -161,15 +161,8 @@ def crear_grafico_barras_linea(df, negocio, plazo_meses):
     
     # Mostrar el gráfico en Streamlit
     st.plotly_chart(fig)
-    # Botón para descargar los datos filtrados
-    if not df_filtrado.empty:
-        csv = df_filtrado.to_csv(index=False).encode('utf-8')
-        st.download_button(
-            label="Descargar datos filtrados",
-            data=csv,
-            file_name="datos_filtrados.csv",
-            mime="text/csv"
-        )
+
+
 
 
 # Título de la aplicación
