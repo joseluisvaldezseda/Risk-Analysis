@@ -176,13 +176,26 @@ negocios_disp = st.multiselect("Selecciona los negocios:", options=list(colores_
 # Selector de plazo en meses con opción de "Todos"
 # Cambia el slider por un selectbox que incluya la opción "Todos los periodos"
 plazo_meses_disp = st.selectbox("Selecciona el plazo (en meses):", options=["Todos"] + list(range(1, 60)), index=1)
-# Filtro dinámico de departamentos en función de los negocios y las hojas seleccionadas
+
 # Filtro dinámico de departamentos en función de los negocios y las hojas seleccionadas
 if hojas_seleccionadas_disp and negocios_disp:
+    # Combinar los datos de las hojas seleccionadas
     df_seleccionado = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas_disp], ignore_index=True)
-    departamentos_filtrados = df_seleccionado[df_seleccionado["NEGOCIO"].isin(negocios_disp)]["DEPARTAMENTO / PRODUCTO"].unique()
-    departamentos_seleccionados = st.multiselect("Selecciona los departamentos:", options=["Todos"] + list(departamentos_filtrados), default="Todos")
+    
+    # Filtrar por los negocios seleccionados
+    df_filtrado_por_negocio = df_seleccionado[df_seleccionado["NEGOCIO"].isin(negocios_disp)]
+    
+    # Obtener los departamentos únicos asociados con los negocios seleccionados
+    departamentos_filtrados = df_filtrado_por_negocio["DEPARTAMENTO / PRODUCTO"].unique()
+    
+    # Crear el filtro de departamentos con las opciones limitadas
+    departamentos_seleccionados = st.multiselect(
+        "Selecciona los departamentos:",
+        options=["Todos"] + sorted(departamentos_filtrados),
+        default="Todos"
+    )
 else:
+    # Si no hay selección, establecer "Todos" como predeterminado
     departamentos_seleccionados = ["Todos"]
 
 # Modificar el filtro en función de la selección múltiple de departamentos
