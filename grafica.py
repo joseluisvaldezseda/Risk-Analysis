@@ -109,6 +109,7 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
     },
         xaxis_title=eje_x,
         yaxis_title=eje_y,
+        margin=dict(t=10, b=10),  # Reduce margen superior e inferior
         legend_title="Variables del eje Y",
         height=700,
     )
