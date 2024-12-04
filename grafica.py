@@ -60,8 +60,9 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
                 'RRR': (x['RRR'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum(),
                 'RRR (con margen)': (x['RRR (con margen)'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum()
             }))
-            .reset_index(drop=False)  # Esto reintroduce todas las columnas del índice
+            .reset_index()  # Esto reintroduce todas las columnas del índice
         )
+    df_filtrado = df_filtrado.loc[:, ~df_filtrado.columns.duplicated()]
     # Filtrar por el umbral de CARTERA CAPITAL TOTAL y condiciones adicionales
     df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] >= 100000]
     df_filtrado = df_filtrado[df_filtrado["TASA"] == "CON TASA"]
