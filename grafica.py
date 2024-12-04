@@ -103,7 +103,7 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
                 if plazo_meses != "Todos" 
                 else f"Gráfico de barras para {negocio} - Todos los periodos",
         "x": 0.5,  # Centra el título horizontalmente
-        "y": 0.90,  # Ajusta la posición vertical (más cerca o lejos del gráfico)
+        "y": 1,  # Ajusta la posición vertical (más cerca o lejos del gráfico)
         "xanchor": "center",  # Asegura que el título esté anclado en el centro
         "yanchor": "top",  # Asegura que se mida desde la parte superior
     },
