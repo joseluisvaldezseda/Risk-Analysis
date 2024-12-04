@@ -109,7 +109,7 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
     },
         xaxis_title=eje_x,
         yaxis_title=eje_y,
-        margin=dict(t=10, b=10),  # Reduce margen superior e inferior
+        margin=dict(t=10, b=2),  # Reduce margen superior e inferior
         legend_title="Variables del eje Y",
         height=700,
     )
@@ -201,8 +201,7 @@ with col_filtros:
         st.empty()
         st.write("                ")
         st.write("                ")
-        st.write("                ")
-        st.write("                ")
+
 
         hojas_seleccionadas_disp = st.multiselect("Selecciona las hojas:", list(dfs.keys()), default=["TOTAL CARTERA_resumen"])
         negocios_disp = st.multiselect("Selecciona los negocios:", options=list(colores_negocios_variantes.keys()))
