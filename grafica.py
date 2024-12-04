@@ -111,7 +111,7 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
         yaxis_title=eje_y,
         margin=dict(t=10, b=2),  # Reduce margen superior e inferior
         legend_title="Variables del eje Y",
-        height=700,
+        height=600,
     )
     
     # Mostrar el gráfico en Streamlit
