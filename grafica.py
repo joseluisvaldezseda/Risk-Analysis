@@ -187,6 +187,9 @@ def crear_grafico_barras_linea(df, negocio, plazo_meses):
 # Crear columnas para la disposición
 col_filtros, col_graficos = st.columns([1, 6])
 with col_filtros:
+            # Añade espacio vertical
+        st.empty()
+        st.write("Este contenido baja más abajo")
         hojas_seleccionadas_disp = st.multiselect("Selecciona las hojas:", list(dfs.keys()), default=["TOTAL CARTERA_resumen"])
         negocios_disp = st.multiselect("Selecciona los negocios:", options=list(colores_negocios_variantes.keys()))
         # Obtener los plazos únicos disponibles en los datos
