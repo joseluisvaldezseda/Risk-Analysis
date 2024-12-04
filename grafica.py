@@ -98,7 +98,15 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
     
     # Configuración del diseño
     fig.update_layout(
-        title=f"Gráfico de dispersión para {negocio} - {plazo_meses} meses" if plazo_meses != "Todos" else f"Gráfico de barras y línea para {negocio} - Todos los periodos",
+       title={
+        "text": f"Gráfico de dispersión para {negocio} - {plazo_meses} meses" 
+                if plazo_meses != "Todos" 
+                else f"Gráfico de barras y línea para {negocio} - Todos los periodos",
+        "x": 0.5,  # Centra el título horizontalmente
+        "y": 0.95,  # Ajusta la posición vertical (más cerca o lejos del gráfico)
+        "xanchor": "center",  # Asegura que el título esté anclado en el centro
+        "yanchor": "top",  # Asegura que se mida desde la parte superior
+    },
         xaxis_title=eje_x,
         yaxis_title=eje_y,
         legend_title="Variables del eje Y",
