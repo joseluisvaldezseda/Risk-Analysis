@@ -238,7 +238,7 @@ with col_filtros:
         
         # Selecciona la columna para el eje X y el eje Y, usando solo las opciones permitidas
         eje_x = st.selectbox("Selecciona la variable para el Eje X:", opciones_columnas)
-        ejes_y = st.multiselect("Selecciona las variables para el Eje Y (puedes elegir varias):", opciones_columnas, default=[opciones_columnas[0]])
+        ejes_y = st.multiselect("Selecciona las variables para el Eje Y:", opciones_columnas, default=[opciones_columnas[0]])
 
 # Mostrar gráfico de dispersión con múltiples ejes Y
 
