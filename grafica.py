@@ -200,7 +200,6 @@ with col_filtros:
             # Añade espacio vertical
         st.empty()
         st.write("                ")
-        st.write("                ")
 
 
         hojas_seleccionadas_disp = st.multiselect("Selecciona las hojas:", list(dfs.keys()), default=["TOTAL CARTERA_resumen"])
