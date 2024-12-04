@@ -100,7 +100,7 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
     fig.update_layout(
         title="Gráfico de dispersión con múltiples variables en el eje Y",
         xaxis_title=eje_x,
-        yaxis_title="Valores de las variables seleccionadas",
+        yaxis_title=eje_y,
         legend_title="Variables del eje Y",
         height=700,
     )
