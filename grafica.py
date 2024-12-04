@@ -180,10 +180,10 @@ def crear_grafico_barras_linea(df, negocio, plazo_meses):
 
 
 # Título de la aplicación
-st.title("Análisis de RRR y Morosidad")
+#st.title("Análisis de RRR y Morosidad")
 
 # Widgets para el gráfico de dispersión
-st.header("Gráfico de Dispersión")
+#st.header("Gráfico de Dispersión")
 # Crear columnas para la disposición
 col_filtros, col_graficos = st.columns([1, 4])
 with col_filtros:
