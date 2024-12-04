@@ -167,6 +167,7 @@ def crear_grafico_barras_linea(df, negocio, plazo_meses):
     fig.update_layout(
         title=f"Gráfico de barras y línea para {negocio} - {plazo_meses} meses" if plazo_meses != "Todos" else f"Gráfico de barras y línea para {negocio} - Todos los periodos",
         xaxis_title="Departamento / Producto",
+        margin=dict(t=10, b=10),  # Reduce margen superior e inferior
         yaxis_title="RRR",
         yaxis2=dict(
             title="%USGAAP 90 PONDERADO",
