@@ -48,7 +48,7 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
     if plazo_meses != "Todos":
         df_filtrado = df_filtrado[df_filtrado["PLAZO MESES"] == plazo_meses]
     # Calcular promedio ponderado si se selecciona "Todos" los departamentos
-    if departamento == "Todos":
+    if plazo_meses == "Todos":
         df_filtrado = (
             df_filtrado.groupby(['NEGOCIO', 'DEPARTAMENTO / PRODUCTO' , 'ID DEPTO' , 'TASA', 'RETAIL/PF/MKP', 'MARGEN'])
             .apply(lambda x: pd.Series({
