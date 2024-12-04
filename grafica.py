@@ -185,7 +185,7 @@ def crear_grafico_barras_linea(df, negocio, plazo_meses):
 # Widgets para el gráfico de dispersión
 #st.header("Gráfico de Dispersión")
 # Crear columnas para la disposición
-col_filtros, col_graficos = st.columns([1, 4])
+col_filtros, col_graficos = st.columns([1, 6])
 with col_filtros:
         hojas_seleccionadas_disp = st.multiselect("Selecciona las hojas:", list(dfs.keys()), default=["TOTAL CARTERA_resumen"])
         negocios_disp = st.multiselect("Selecciona los negocios:", options=list(colores_negocios_variantes.keys()))
