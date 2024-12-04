@@ -82,7 +82,7 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
             hover_text = (
                 "Departamento/Producto: " + df_filtrado_var["DEPARTAMENTO / PRODUCTO"].astype(str) + "<br>" +
                 "Cartera Capital Total: $" + df_filtrado_var["CARTERA CAPITAL TOTAL"].apply(lambda x: f"{x:,.2f}") + "<br>" +
-                "Morosidad: " + df_filtrado_var["%USGAAP 90 PONDERADO"].apply(lambda x: f"{x:,.2f}")+ "%" +
+                 #"Morosidad: " + df_filtrado_var["%USGAAP 90 PONDERADO"].apply(lambda x: f"{x:,.2f}")+ "%" +
                 df_filtrado_var.apply(
         lambda row: f"{eje_x}: {row[eje_x]:,.2f}<br>{eje_y}: {row[eje_y]:,.2f}",
         axis=1)
