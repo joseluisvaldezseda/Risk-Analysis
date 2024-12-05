@@ -60,8 +60,8 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
                 'RRR': (x['RRR'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum(),
                 'RRR (con margen)': (x['RRR (con margen)'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum()
             }))
-            .rename_axis(index={'MARGEN': 'MARGEN_ORIGINAL'})  # Renombramos 'MARGEN' antes de reset_index
-            .reset_index()  # Esto reintroduce todas las columnas del índice
+            #.rename_axis(index={'MARGEN': 'MARGEN_ORIGINAL'})  # Renombramos 'MARGEN' antes de reset_index
+            .reset_index(drop=True)  # Esto reintroduce todas las columnas del índice
         )
    
     # Filtrar por el umbral de CARTERA CAPITAL TOTAL y condiciones adicionales
