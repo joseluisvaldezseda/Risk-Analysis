@@ -117,14 +117,35 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
                 if plazo_meses != "Todos" 
                 else f"Gráfico de dispersión para {negocio} - Todos los periodos",
         "x": 0.45,  # Centra el título horizontalmente
-        "y": 1.1,  # Ajusta la posición vertical (más cerca o lejos del gráfico)
+        "y": 1,  # Ajusta la posición vertical (más cerca o lejos del gráfico)
         "xanchor": "center",  # Asegura que el título esté anclado en el centro
         "yanchor": "top",  # Asegura que se mida desde la parte superior
     },
-        xaxis_title=eje_x,
-        yaxis_title=eje_y,
-        plot_bgcolor='rgba(240, 240, 240, 1)',  # Color de fondo de la malla
-        paper_bgcolor='rgba(255, 255, 255, 1)',  # Color del fondo general
+        #xaxis_title=eje_x,
+        #yaxis_title=eje_y,
+            xaxis=dict(
+        title=eje_x,
+        showline=True,
+        linewidth=2,
+        linecolor='black',
+        mirror=True,
+        zeroline=True,
+        zerolinewidth=1,
+        zerolinecolor='black'
+    ),
+        yaxis=dict(
+            title=eje_y,
+            showline=True,
+            linewidth=2,
+            linecolor='black',
+            mirror=True,
+            zeroline=True,
+            zerolinewidth=1,
+            zerolinecolor='black'
+        ),
+
+        #plot_bgcolor='rgba(240, 240, 240, 1)',  # Color de fondo de la malla
+        #paper_bgcolor='rgba(255, 255, 255, 1)',  # Color del fondo general
         margin=dict(t=10, b=2),  # Reduce margen superior e inferior
         legend_title="Variables del eje Y",
         height=600,
