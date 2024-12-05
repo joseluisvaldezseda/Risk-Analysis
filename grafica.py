@@ -50,11 +50,12 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
     # Calcular promedio ponderado si se selecciona "Todos" los departamentos
     if plazo_meses == "Todos":
         # Columnas base de agrupación
-        columnas_agrupacion = ['NEGOCIO', 'DEPARTAMENTO / PRODUCTO', 'ID DEPTO', 'TASA', 'RETAIL/PF/MKP']
+        columnas_agrupacion = ['NEGOCIO', 'DEPARTAMENTO / PRODUCTO', 'ID DEPTO', 'TASA', 'RETAIL/PF/MKP','MARGEN']
         
         # Verificar si "MARGEN" existe en el DataFrame
-        if 'MARGEN' in df_filtrado.columns:
-            columnas_agrupacion.append('MARGEN')
+        # Asegurarte de que "MARGEN" exista
+        
+        df_filtrado['MARGEN'] = 0  # O usa un valor predeterminado como 0
         
         # Agrupación y cálculo
         df_filtrado = (
