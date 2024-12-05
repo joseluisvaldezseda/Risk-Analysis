@@ -223,7 +223,7 @@ with col_filtros:
         # Obtener los plazos únicos disponibles en los datos
         # Selector de plazo en meses con opción de "Todos"
         # Cambia el slider por un selectbox que incluya la opción "Todos los periodos"
-        plazo_meses_disp = st.selectbox("Selecciona el plazo (en meses):", options=["Todos"] + list(range(1, 60)), index=1)
+        plazo_meses_disp = st.selectbox("Selecciona el plazo:", options=["Todos"] + list(range(1, 60)), index=1)
         
         # Filtro dinámico de departamentos en función de los negocios y las hojas seleccionadas
         if hojas_seleccionadas_disp and negocios_disp:
