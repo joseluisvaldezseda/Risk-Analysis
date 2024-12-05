@@ -51,7 +51,6 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
     if plazo_meses == "Todos":
         df_filtrado = (
             df_filtrado.groupby(['NEGOCIO', 'DEPARTAMENTO / PRODUCTO' , 'ID DEPTO' , 'TASA', 'RETAIL/PF/MKP', 'MARGEN'])
-            .reset_index(drop=True)  # Esto reintroduce todas las columnas del índice
             .apply(lambda x: pd.Series({
                 'CARTERA CAPITAL TOTAL': x['CARTERA CAPITAL TOTAL'].sum(),
                 'TASA ACTIVA PONDERADA': (x['TASA ACTIVA PONDERADA'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum(),
@@ -67,7 +66,8 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
             #.rename_axis(index={'ID DEPTO': 'ID DEPTO_ORIGINAL'})
             #.rename_axis(index={'DEPARTAMENTO / PRODUCTO': 'DEPARTAMENTO / PRODUCTO_ORIGINAL'})
             #.rename_axis(index={'NEGOCIO': 'NEGOCIO_ORIGINAL'})
-        
+            .reset_index(drop=False)  # Esto reintroduce todas las columnas del índice
+
         )
    
     # Filtrar por el umbral de CARTERA CAPITAL TOTAL y condiciones adicionales
