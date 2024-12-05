@@ -123,6 +123,8 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
     },
         xaxis_title=eje_x,
         yaxis_title=eje_y,
+        plot_bgcolor='rgba(240, 240, 240, 1)',  # Color de fondo de la malla
+        paper_bgcolor='rgba(255, 255, 255, 1)',  # Color del fondo general
         margin=dict(t=10, b=2),  # Reduce margen superior e inferior
         legend_title="Variables del eje Y",
         height=600,
