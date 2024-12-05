@@ -66,7 +66,7 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
             #.rename_axis(index={'ID DEPTO': 'ID DEPTO_ORIGINAL'})
             #.rename_axis(index={'DEPARTAMENTO / PRODUCTO': 'DEPARTAMENTO / PRODUCTO_ORIGINAL'})
             #.rename_axis(index={'NEGOCIO': 'NEGOCIO_ORIGINAL'})
-            .reset_index()  # Esto reintroduce todas las columnas del índice
+            .reset_index(drop=True)  # Esto reintroduce todas las columnas del índice
         )
    
     # Filtrar por el umbral de CARTERA CAPITAL TOTAL y condiciones adicionales
