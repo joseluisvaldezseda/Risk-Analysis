@@ -55,8 +55,7 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
         # Verificar si "MARGEN" existe en el DataFrame
         # Asegurarte de que "MARGEN" exista
         
-        df_filtrado['MARGEN'] = 0  # O usa un valor predeterminado como 0
-        
+        df_filtrado['MARGEN'] = df_filtrado['MARGEN'].fillna(0)        
         # Agrupación y cálculo
         df_filtrado = (
             df_filtrado.groupby(columnas_agrupacion)
