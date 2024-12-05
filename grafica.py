@@ -126,8 +126,8 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
             xaxis=dict(
         title=eje_x,
         showline=True,
-        linewidth=2,
-        linecolor='black',
+        #linewidth=2,
+        #linecolor='black',
         mirror=True,
         zeroline=True,
         zerolinewidth=1,
@@ -136,8 +136,8 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
         yaxis=dict(
             title=eje_y,
             showline=True,
-            linewidth=2,
-            linecolor='black',
+            #linewidth=2,
+            #linecolor='black',
             mirror=True,
             zeroline=True,
             zerolinewidth=1,
