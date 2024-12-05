@@ -49,8 +49,16 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
         df_filtrado = df_filtrado[df_filtrado["PLAZO MESES"] == plazo_meses]
     # Calcular promedio ponderado si se selecciona "Todos" los departamentos
     if plazo_meses == "Todos":
+        # Columnas base de agrupación
+        columnas_agrupacion = ['NEGOCIO', 'DEPARTAMENTO / PRODUCTO', 'ID DEPTO', 'TASA', 'RETAIL/PF/MKP']
+        
+        # Verificar si "MARGEN" existe en el DataFrame
+        if 'MARGEN' in df_filtrado.columns:
+            columnas_agrupacion.append('MARGEN')
+        
+        # Agrupación y cálculo
         df_filtrado = (
-            df_filtrado.groupby(['NEGOCIO', 'DEPARTAMENTO / PRODUCTO' , 'ID DEPTO' , 'TASA', 'RETAIL/PF/MKP','MARGEN'])
+            df_filtrado.groupby(columnas_agrupacion)
             .apply(lambda x: pd.Series({
                 'CARTERA CAPITAL TOTAL': x['CARTERA CAPITAL TOTAL'].sum(),
                 'TASA ACTIVA PONDERADA': (x['TASA ACTIVA PONDERADA'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum(),
@@ -60,16 +68,9 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
                 'RRR': (x['RRR'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum(),
                 'RRR (con margen)': (x['RRR (con margen)'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum()
             }))
-            #.rename_axis(index={'MARGEN': 'MARGEN_ORIGINAL'})  # Renombramos 'MARGEN' antes de reset_index
-            #.rename_axis(index={'RETAIL/PF/MKP': 'RETAIL/PF/MKP_ORIGINAL'})
-            #.rename_axis(index={'TASA': 'TASA_ORIGINAL'})
-            #.rename_axis(index={'ID DEPTO': 'ID DEPTO_ORIGINAL'})
-            #.rename_axis(index={'DEPARTAMENTO / PRODUCTO': 'DEPARTAMENTO / PRODUCTO_ORIGINAL'})
-            #.rename_axis(index={'NEGOCIO': 'NEGOCIO_ORIGINAL'})
-            .reset_index(drop=False)  # Esto reintroduce todas las columnas del índice
-
+            .reset_index(drop=False)
         )
-   
+           
     # Filtrar por el umbral de CARTERA CAPITAL TOTAL y condiciones adicionales
     df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] >= 100000]
     df_filtrado = df_filtrado[df_filtrado["TASA"] == "CON TASA"]
