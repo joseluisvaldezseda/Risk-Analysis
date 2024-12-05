@@ -63,7 +63,7 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
             .rename_axis(index={'MARGEN': 'MARGEN_ORIGINAL'})  # Renombramos 'MARGEN' antes de reset_index
             .rename_axis(index={'RETAIL/PF/MKP': 'RETAIL/PF/MKP_ORIGINAL'})
             .rename_axis(index={'TASA': 'TASA_ORIGINAL'})
-            .rename_axis(index={'ID DEPTO': 'ID DEPTO'})
+            .rename_axis(index={'ID DEPTO': 'ID DEPTO_ORIGINAL'})
             .rename_axis(index={'DEPARTAMENTO / PRODUCTO': 'DEPARTAMENTO / PRODUCTO_ORIGINAL'})
             .rename_axis(index={'NEGOCIO': 'NEGOCIO_ORIGINAL'})
             .reset_index()  # Esto reintroduce todas las columnas del índice
