@@ -104,7 +104,7 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
                 y=df_filtrado_var[eje_y],
                 mode='markers+text',
                 hovertext=hover_text,  # Agregar el texto para hover
-                marker=dict(size=df_filtrado_var["CARTERA CAPITAL TOTAL"] / 1000000, opacity=0.6, color=color, line=dict(width=1, color='DarkSlateGrey')),
+                marker=dict(size=df_filtrado_var["CARTERA CAPITAL TOTAL"] / 100000000, opacity=0.6, color=color, line=dict(width=1, color='DarkSlateGrey')),
                 text=df_filtrado_var["DEPARTAMENTO / PRODUCTO"],
                 name=f"{negocio} - {eje_y}",  # Nombre del eje Y actual incluyendo el negocio
                 textfont=dict(size=6),
