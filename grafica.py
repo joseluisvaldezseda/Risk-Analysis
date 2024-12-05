@@ -115,7 +115,7 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
        title={
         "text": f"Gráfico de dispersión para {negocio} - {plazo_meses} meses" 
                 if plazo_meses != "Todos" 
-                else f"Gráfico de barras para {negocio} - Todos los periodos",
+                else f"Gráfico de dispersión para {negocio} - Todos los periodos",
         "x": 0.45,  # Centra el título horizontalmente
         "y": 1,  # Ajusta la posición vertical (más cerca o lejos del gráfico)
         "xanchor": "center",  # Asegura que el título esté anclado en el centro
