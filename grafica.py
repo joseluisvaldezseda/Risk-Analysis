@@ -109,8 +109,19 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
                 text=df_filtrado_var["DEPARTAMENTO / PRODUCTO"],
                 name=f"{negocio} - {eje_y}",  # Nombre del eje Y actual incluyendo el negocio
                 textfont=dict(size=6),
-                textposition='middle right'
+                textposition='middle right',
+                showlegend=True  # Mantener la entrada en la leyenda
+
             ))
+            # Crear una entrada fija para la leyenda (sin agregar otro trace)
+            fig.update_traces(
+                legendgrouptitle_text=f"{negocio} - {eje_y}",
+                marker=dict(
+                    size=10,  # Tamaño fijo para la leyenda
+                    sizemode='area',  # Mantener escalado adecuado
+                    opacity=1  # Totalmente visible en la leyenda
+                )
+            )
          
             
     # Configuración del diseño
