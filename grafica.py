@@ -111,19 +111,7 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
                 textfont=dict(size=6),
                 textposition='middle right'
             ))
-            # Círculo fijo para la leyenda
-        fig.add_trace(go.Scatter(
-            x=[None],  # Este punto no aparecerá en el gráfico
-            y=[None],
-            mode='markers',
-            marker=dict(
-                size=10,  # Tamaño fijo para la leyenda
-                color='blue'
-            ),
-            name=f"{negocio} - {eje_y}",  # Misma etiqueta para la leyenda
-            legendgroup=f"{negocio} - {eje_y}",  # Misma leyenda que el gráfico
-            showlegend=True  # Se mostrará en la leyenda
-        ))
+         
             
     # Configuración del diseño
     fig.update_layout(
