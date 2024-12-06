@@ -54,7 +54,7 @@ def add_custom_css():
 
         /* Cambiar el color del texto del dropdown en los filtros */
         .stMultiSelect div[data-baseweb="menu"] {
-            background-color: #FF6347; /* Otra tonalidad */
+            background-color: black; /* Otra tonalidad */
             color: black; /* Cambiar texto a negro */
         }
         </style>
