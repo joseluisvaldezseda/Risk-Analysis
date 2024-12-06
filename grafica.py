@@ -123,8 +123,8 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
                     color=color,
                     line=dict(width=1, color='DarkSlateGrey')
                 ),
-                name=f"{negocio} - {eje_y} (leyenda fija)",  # Texto que aparece en la leyenda
-                showlegend=True  # Mostrarlo solo en la leyenda
+                name=f"{negocio} - {eje_y} (leyenda fija)"  # Texto que aparece en la leyenda
+                #showlegend=True  # Mostrarlo solo en la leyenda
             ))
          
             
