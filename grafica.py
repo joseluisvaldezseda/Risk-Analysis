@@ -38,7 +38,7 @@ def add_custom_css():
         <style>
         /* Cambiar el color de fondo de los botones */
         .stButton>button {
-            background-color: #FF4500; /* Cambiar a rojo o naranja */
+            background-color: black; /* Cambiar a rojo o naranja */
             color: white; /* Cambiar el texto a blanco */
             border-radius: 8px; /* Opcional: redondear bordes */
             border: 1px solid #FF4500; /* Opcional: color del borde */
@@ -46,7 +46,7 @@ def add_custom_css():
         
         /* Cambiar el color de fondo de los filtros y selectores múltiples */
         .stMultiSelect div[data-baseweb="select"] {
-            background-color: #FF4500; /* Cambiar a rojo o naranja */
+            background-color: black; /* Cambiar a rojo o naranja */
             color: white; /* Cambiar el texto a blanco */
             border-radius: 8px; /* Opcional */
             border: 1px solid #FF4500; /* Opcional */
