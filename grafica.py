@@ -44,7 +44,7 @@ def add_custom_css():
 
         /* Cambiar el color de fondo del contenedor del multiselect */
         .stMultiSelect div[data-baseweb="select"] {
-            background-color: #F5F5F5; /* Fondo gris claro */
+            background-color: black; /* Fondo gris claro */
             border: 1px solid #DCDCDC; /* Opcional: borde */
         }
 
