@@ -109,8 +109,8 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
                 text=df_filtrado_var["DEPARTAMENTO / PRODUCTO"],
                 name=f"{negocio} - {eje_y}",  # Nombre del eje Y actual incluyendo el negocio
                 textfont=dict(size=6),
-                textposition='middle right'
-                #showlegend=True  # Mantener la entrada en la leyenda
+                textposition='middle right',
+                showlegend=True  # Mantener la entrada en la leyenda
 
             ))
            # Crear un trace adicional con tamaño fijo SOLO para la leyenda
@@ -123,8 +123,8 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
                     color=color,
                     line=dict(width=1, color='DarkSlateGrey')
                 ),
-                name=f"{negocio} - {eje_y} (leyenda fija)"  # Texto que aparece en la leyenda
-                #showlegend=True  # Mostrarlo solo en la leyenda
+                name=f"{negocio} - {eje_y} (leyenda fija)",  # Texto que aparece en la leyenda
+                showlegend=True  # Mostrarlo solo en la leyenda
             ))
          
             
