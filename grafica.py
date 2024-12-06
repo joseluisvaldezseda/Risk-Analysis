@@ -30,48 +30,6 @@ colores_negocios_variantes = {
     "LA MARINA": ["#00FF00", "#66FF66", "#99FF99"],   # Variantes de verde
     "PROGRESSA": ["#800080", "#B266B2", "#D9B3D9"]    # Variantes de morado
 }
-# Función para inyectar estilos CSS personalizados
-def add_custom_css():
-    st.markdown(
-        """
-        <style>
-        /* Cambiar el color de los chips seleccionados en el multiselect */
-        .stMultiSelect div[data-baseweb="tag"] {
-            background-color: black; /* Cambiar a rojo o naranja */
-            color: white; /* Texto en blanco */
-            border-radius: 8px; /* Opcional: bordes redondeados */
-        }
-
-        /* Cambiar el color de fondo del contenedor del multiselect */
-        .stMultiSelect div[data-baseweb="select"] {
-            background-color: black; /* Fondo gris claro */
-            border: 1px solid #DCDCDC; /* Opcional: borde */
-        }
-
-        /* Cambiar el color del texto y las opciones del dropdown */
-        .stMultiSelect div[data-baseweb="menu"] {
-            background-color: #FFFFFF; /* Fondo blanco */
-            color: black; /* Texto negro */
-        }
-
-        /* Cambiar el estilo del texto de las opciones */
-        .stMultiSelect div[data-baseweb="option"] {
-            background-color: #FF6347; /* Fondo naranja */
-            color: white; /* Texto en blanco */
-        }
-
-        /* Cambiar el estilo del botón de eliminación (X) */
-        .stMultiSelect div[data-baseweb="tag"] svg {
-            fill: white; /* Icono en blanco */
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-
-# Agregar estilos personalizados
-add_custom_css()
-
 
 
 def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionados, departamento, plazo_meses, eje_x, ejes_y):
