@@ -37,7 +37,7 @@ def add_custom_css():
         <style>
         /* Cambiar el color de los chips seleccionados en el multiselect */
         .stMultiSelect div[data-baseweb="tag"] {
-            background-color: #FF4500; /* Cambiar a rojo o naranja */
+            background-color: black; /* Cambiar a rojo o naranja */
             color: white; /* Texto en blanco */
             border-radius: 8px; /* Opcional: bordes redondeados */
         }
