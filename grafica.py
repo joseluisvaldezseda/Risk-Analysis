@@ -122,7 +122,7 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
         "yanchor": "top",  # Asegura que se mida desde la parte superior
     },
         xaxis_title=eje_x,
-        yaxis_title=eje_y,
+        yaxis_title=" | ".join(ejes_y),
    
 
         plot_bgcolor='rgba(240, 240, 240, 1)',  # Color de fondo de la malla
