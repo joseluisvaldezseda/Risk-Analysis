@@ -113,9 +113,9 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
     # Configuración del diseño
     fig.update_layout(
        title={
-        "text": f"Gráfico de dispersión para {negocio} - {plazo_meses} meses" 
+        "text": f"Gráfico de dispersión para {', '.join(negocios_seleccionados)} - {plazo_meses} meses" 
                 if plazo_meses != "Todos" 
-                else f"Gráfico de dispersión para {negocio} - Todos los periodos",
+                else f"Gráfico de dispersión para {', '.join(negocios_seleccionados)} - Todos los periodos",
         "x": 0.5,  # Centra el título horizontalmente
         "y": 0.98,  # Ajusta la posición vertical (más cerca o lejos del gráfico)
         "xanchor": "center",  # Asegura que el título esté anclado en el centro
