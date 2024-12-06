@@ -103,13 +103,28 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
                 y=df_filtrado_var[eje_y],
                 mode='markers+text',
                 hovertext=hover_text,  # Agregar el texto para hover
-                marker=dict(size=df_filtrado_var["CARTERA CAPITAL TOTAL"] / 10000000, opacity=0.6, color=color, line=dict(width=1, color='DarkSlateGrey')),
+                marker=dict(size=df_filtrado_var["CARTERA CAPITAL TOTAL"] / 10000000, opacity=0.6, color=color, line=dict(width=1, color='DarkSlateGrey',
+                sizemin=4,                                                                                                         
+                )),
                 text=df_filtrado_var["DEPARTAMENTO / PRODUCTO"],
                 name=f"{negocio} - {eje_y}",  # Nombre del eje Y actual incluyendo el negocio
                 textfont=dict(size=6),
                 textposition='middle right'
             ))
-    
+            # Círculo fijo para la leyenda
+        fig.add_trace(go.Scatter(
+            x=[None],  # Este punto no aparecerá en el gráfico
+            y=[None],
+            mode='markers',
+            marker=dict(
+                size=10,  # Tamaño fijo para la leyenda
+                color='blue'
+            ),
+            name=f"{negocio} - {eje_y}",  # Misma etiqueta para la leyenda
+            legendgroup=f"{negocio} - {eje_y}",  # Misma leyenda que el gráfico
+            showlegend=True  # Se mostrará en la leyenda
+        ))
+            
     # Configuración del diseño
     fig.update_layout(
        title={
