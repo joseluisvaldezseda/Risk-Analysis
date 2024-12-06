@@ -250,7 +250,7 @@ with col_filtros:
             
             # Filtrar por los negocios seleccionados
             df_filtrado_por_negocio = df_seleccionado[df_seleccionado["NEGOCIO"].isin(negocios_disp)]
-             df_filtrado_por_negocio =  df_filtrado_por_negocio[df_filtrado_por_negocio["CARTERA CAPITAL TOTAL"] >= 550000]
+            df_filtrado_por_negocio =  df_filtrado_por_negocio[df_filtrado_por_negocio["CARTERA CAPITAL TOTAL"] >= 550000]
             # Obtener los departamentos únicos asociados con los negocios seleccionados
             departamentos_filtrados = df_filtrado_por_negocio["DEPARTAMENTO / PRODUCTO"].unique()
            
