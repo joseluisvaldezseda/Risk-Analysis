@@ -30,7 +30,39 @@ colores_negocios_variantes = {
     "LA MARINA": ["#00FF00", "#66FF66", "#99FF99"],   # Variantes de verde
     "PROGRESSA": ["#800080", "#B266B2", "#D9B3D9"]    # Variantes de morado
 }
+# Función para inyectar estilos CSS personalizados
+def add_custom_css():
+    st.markdown(
+        """
+        <style>
+        /* Cambiar el color de fondo de los botones */
+        .stButton>button {
+            background-color: #FF4500; /* Cambiar a rojo o naranja */
+            color: white; /* Cambiar el texto a blanco */
+            border-radius: 8px; /* Opcional: redondear bordes */
+            border: 1px solid #FF4500; /* Opcional: color del borde */
+        }
+        
+        /* Cambiar el color de fondo de los filtros y selectores múltiples */
+        .stMultiSelect div[data-baseweb="select"] {
+            background-color: #FF4500; /* Cambiar a rojo o naranja */
+            color: white; /* Cambiar el texto a blanco */
+            border-radius: 8px; /* Opcional */
+            border: 1px solid #FF4500; /* Opcional */
+        }
 
+        /* Cambiar el color del texto del dropdown en los filtros */
+        .stMultiSelect div[data-baseweb="menu"] {
+            background-color: #FF6347; /* Otra tonalidad */
+            color: black; /* Cambiar texto a negro */
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+# Agregar estilos personalizados
+add_custom_css()
 
 def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionados, departamento, plazo_meses, eje_x, ejes_y):
     # Verificar que al menos un negocio esté seleccionado
