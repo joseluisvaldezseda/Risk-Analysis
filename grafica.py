@@ -110,7 +110,7 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
                 name=f"{negocio} - {eje_y}",  # Nombre del eje Y actual incluyendo el negocio
                 textfont=dict(size=6),
                 textposition='middle right',
-                showlegend=True  # Mantener la entrada en la leyenda
+                showlegend=False  # Mantener la entrada en la leyenda
 
             ))
             # Crear una entrada fija para la leyenda (sin agregar otro trace)
