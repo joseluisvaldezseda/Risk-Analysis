@@ -110,18 +110,22 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
                 name=f"{negocio} - {eje_y}",  # Nombre del eje Y actual incluyendo el negocio
                 textfont=dict(size=6),
                 textposition='middle right',
-                showlegend=False  # Mantener la entrada en la leyenda
+                showlegend=True  # Mantener la entrada en la leyenda
 
             ))
-            # Crear una entrada fija para la leyenda (sin agregar otro trace)
-            fig.update_traces(
-                legendgrouptitle_text=f"{negocio} - {eje_y}",
+           # Crear un trace adicional con tamaño fijo SOLO para la leyenda
+            fig.add_trace(go.Scatter(
+                x=[None],  # Punto "ficticio" fuera del gráfico
+                y=[None],
+                mode='markers',
                 marker=dict(
                     size=10,  # Tamaño fijo para la leyenda
-                    sizemode='area',  # Mantener escalado adecuado
-                    opacity=1  # Totalmente visible en la leyenda
-                )
-            )
+                    color=color,
+                    line=dict(width=1, color='DarkSlateGrey')
+                ),
+                name=f"{negocio} - {eje_y} (leyenda fija)",  # Texto que aparece en la leyenda
+                showlegend=True  # Mostrarlo solo en la leyenda
+            ))
          
             
     # Configuración del diseño
