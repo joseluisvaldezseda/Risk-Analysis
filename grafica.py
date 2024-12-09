@@ -237,11 +237,11 @@ with col_filtros:
         st.empty()
 
         hojas_seleccionadas_disp = st.multiselect("Selecciona las hojas:", list(dfs.keys()), default=["TOTAL CARTERA_resumen"])
-        negocios_disp = st.multiselect("Selecciona los negocios:", options=list(colores_negocios_variantes.keys()))
+        negocios_disp = st.multiselect("Selecciona los negocios:", options=list(colores_negocios_variantes.keys()), default=["EL BODEGON"])
         # Obtener los plazos únicos disponibles en los datos
         # Selector de plazo en meses con opción de "Todos"
         # Cambia el slider por un selectbox que incluya la opción "Todos los periodos"
-        plazo_meses_disp = st.selectbox("Selecciona el plazo:", options=["Todos"] + list(range(1, 60)), index=1)
+        plazo_meses_disp = st.selectbox("Selecciona el plazo:", options=["Todos"] + list(range(1, 60)), index=0)
         
         # Filtro dinámico de departamentos en función de los negocios y las hojas seleccionadas
         if hojas_seleccionadas_disp and negocios_disp:
@@ -275,7 +275,7 @@ with col_filtros:
         
         # Selecciona la columna para el eje X y el eje Y, usando solo las opciones permitidas
         eje_x = st.selectbox("Selecciona la variable para el Eje X:", opciones_columnas)
-        ejes_y = st.multiselect("Selecciona las variables para el Eje Y:", opciones_columnas, default=[opciones_columnas[0]])
+        ejes_y = st.multiselect("Selecciona las variables para el Eje Y:", opciones_columnas, default=[opciones_columnas[0]],default=["RRR"])
 
 # Mostrar gráfico de dispersión con múltiples ejes Y
 
