@@ -244,14 +244,12 @@ if "plazo_meses_disp" not in st.session_state:
 if "departamentos_seleccionados" not in st.session_state:
     st.session_state["departamentos_seleccionados"] = ["Todos"]
 
-# Función para manejar actualizaciones
+# Función para manejar actualizaciones de filtros
 def actualizar_filtro(key, value):
     st.session_state[key] = value
-    if key == "negocios_disp":  # Si cambia el negocio, reiniciar departamentos seleccionados
-        st.session_state["departamentos_seleccionados"] = ["Todos"]
 
-# Filtros de selección
-with st.sidebar:  # Puedes ajustar la ubicación de los filtros
+# Filtros de selección en la columna de filtros
+with col_filtros:
     st.empty()  # Espacio vertical
     
     # Selección de hojas
@@ -260,16 +258,16 @@ with st.sidebar:  # Puedes ajustar la ubicación de los filtros
         list(dfs.keys()),
         default=st.session_state["hojas_seleccionadas_disp"],
         on_change=actualizar_filtro,
-        args=("hojas_seleccionadas_disp", st.session_state["hojas_seleccionadas_disp"]),
+        args=("hojas_seleccionadas_disp", st.session_state["hojas_seleccionadas_disp"])
     )
-    
+
     # Selección de negocios
     negocios_disp = st.multiselect(
         "Selecciona los negocios:",
         options=list(colores_negocios_variantes.keys()),
         default=st.session_state["negocios_disp"],
         on_change=actualizar_filtro,
-        args=("negocios_disp", st.session_state["negocios_disp"]),
+        args=("negocios_disp", st.session_state["negocios_disp"])
     )
     
     # Selección de plazo
@@ -278,33 +276,46 @@ with st.sidebar:  # Puedes ajustar la ubicación de los filtros
         options=["Todos"] + list(range(1, 60)),
         index=0 if st.session_state["plazo_meses_disp"] == "Todos" else st.session_state["plazo_meses_disp"],
         on_change=actualizar_filtro,
-        args=("plazo_meses_disp", st.session_state["plazo_meses_disp"]),
+        args=("plazo_meses_disp", st.session_state["plazo_meses_disp"])
     )
-
-    # Crea DataFrame filtrado según los negocios seleccionados
+    
+    # Filtro dinámico de departamentos
     if hojas_seleccionadas_disp and negocios_disp:
         df_seleccionado = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas_disp], ignore_index=True)
         df_filtrado_por_negocio = df_seleccionado[df_seleccionado["NEGOCIO"].isin(negocios_disp)]
         df_filtrado_por_negocio = df_filtrado_por_negocio[df_filtrado_por_negocio["CARTERA CAPITAL TOTAL"] >= 550000]
         df_filtrado_por_negocio = df_filtrado_por_negocio[df_filtrado_por_negocio["TASA"] == "CON TASA"]
         departamentos_filtrados = df_filtrado_por_negocio["DEPARTAMENTO / PRODUCTO"].unique()
+
+        departamentos_seleccionados = st.multiselect(
+            "Selecciona los departamentos:",
+            options=["Todos"] + sorted(departamentos_filtrados),
+            default=st.session_state["departamentos_seleccionados"],
+            on_change=actualizar_filtro,
+            args=("departamentos_seleccionados", st.session_state["departamentos_seleccionados"])
+        )
     else:
-        departamentos_filtrados = []
-
-    # Selección de departamentos
-    departamentos_seleccionados = st.multiselect(
-        "Selecciona los departamentos:",
-        options=["Todos"] + sorted(departamentos_filtrados),
-        default=st.session_state["departamentos_seleccionados"],
-        on_change=actualizar_filtro,
-        args=("departamentos_seleccionados", st.session_state["departamentos_seleccionados"]),
-    )
-
-    # Determina el valor final de los departamentos
+        departamentos_seleccionados = ["Todos"]
+        st.session_state["departamentos_seleccionados"] = departamentos_seleccionados
+    
+    # Determina el valor final del filtro de departamentos
     if "Todos" in departamentos_seleccionados:
         departamento_disp = "Todos"
     else:
         departamento_disp = departamentos_seleccionados
+
+    # Selección de ejes
+    opciones_columnas = ["%USGAAP 90 PONDERADO", "RRR", "RRR (con margen)", "MARGEN", "TASA ACTIVA PONDERADA"]
+    eje_x = st.selectbox(
+        "Selecciona la variable para el Eje X:",
+        opciones_columnas
+    )
+    ejes_y = st.multiselect(
+        "Selecciona las variables para el Eje Y:",
+        opciones_columnas,
+        default=["RRR"]
+    )
+
 # Mostrar gráfico de dispersión
 with col_graficos:
     if ejes_y:
