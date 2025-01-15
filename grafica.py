@@ -316,8 +316,7 @@ with col_filtros:
 # Mostrar gráfico de dispersión con múltiples ejes Y
 
 with col_graficos:
-            if ejes_y:
-                crear_grafico_dispersión_multiple(
+          crear_grafico_dispersión_multiple(
                     st.session_state["hojas_seleccionadas_disp"],
                     st.session_state["negocios_disp"],
                     departamento_disp,
@@ -325,9 +324,7 @@ with col_graficos:
                     st.session_state["eje_x"],
                     st.session_state["ejes_y"]
                 )
-            else:
-                st.warning("Por favor, selecciona al menos una variable para el eje Y.")
-
+          
 # Widgets para el gráfico de barras y línea
 st.header("Gráfico de Barras y Línea")
 hoja_seleccionada_barras = st.selectbox("Selecciona la hoja:", list(dfs.keys()))
