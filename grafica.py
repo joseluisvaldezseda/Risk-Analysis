@@ -279,23 +279,23 @@ with col_filtros:
     )
     
     # Filtro dinámico de departamentos
-    if hojas_seleccionadas_disp and negocios_disp:
-        df_seleccionado = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas_disp], ignore_index=True)
-        df_filtrado_por_negocio = df_seleccionado[df_seleccionado["NEGOCIO"].isin(negocios_disp)]
-        df_filtrado_por_negocio = df_filtrado_por_negocio[df_filtrado_por_negocio["CARTERA CAPITAL TOTAL"] >= 550000]
-        df_filtrado_por_negocio = df_filtrado_por_negocio[df_filtrado_por_negocio["TASA"] == "CON TASA"]
-        departamentos_filtrados = df_filtrado_por_negocio["DEPARTAMENTO / PRODUCTO"].unique()
+    #if hojas_seleccionadas_disp and negocios_disp:
+    df_seleccionado = pd.concat([dfs[hoja] for hoja in hojas_seleccionadas_disp], ignore_index=True)
+    df_filtrado_por_negocio = df_seleccionado[df_seleccionado["NEGOCIO"].isin(negocios_disp)]
+    df_filtrado_por_negocio = df_filtrado_por_negocio[df_filtrado_por_negocio["CARTERA CAPITAL TOTAL"] >= 550000]
+    df_filtrado_por_negocio = df_filtrado_por_negocio[df_filtrado_por_negocio["TASA"] == "CON TASA"]
+    departamentos_filtrados = df_filtrado_por_negocio["DEPARTAMENTO / PRODUCTO"].unique()
 
-        departamentos_seleccionados = st.multiselect(
-            "Selecciona los departamentos:",
-            options=["Todos"] + sorted(departamentos_filtrados),
-            default=st.session_state["departamentos_seleccionados"],
-            on_change=actualizar_filtro,
-            args=("departamentos_seleccionados", st.session_state["departamentos_seleccionados"])
-        )
-    else:
-        departamentos_seleccionados = ["Todos"]
-        st.session_state["departamentos_seleccionados"] = departamentos_seleccionados
+    departamentos_seleccionados = st.multiselect(
+        "Selecciona los departamentos:",
+        options=["Todos"] + sorted(departamentos_filtrados),
+        default=st.session_state["departamentos_seleccionados"],
+        on_change=actualizar_filtro,
+        args=("departamentos_seleccionados", st.session_state["departamentos_seleccionados"])
+    )
+    #else:
+        #departamentos_seleccionados = ["Todos"]
+        #st.session_state["departamentos_seleccionados"] = departamentos_seleccionados
     
     # Determina el valor final del filtro de departamentos
     if "Todos" in departamentos_seleccionados:
