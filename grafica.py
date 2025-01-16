@@ -175,21 +175,51 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
 
 
 # Función para crear el gráfico combinado de barras y línea
+# Función para crear el gráfico combinado de barras y línea
 def crear_grafico_barras_linea(df, negocio, plazo_meses):
-    # Filtra los datos por negocio y por plazo, o todos los periodos
+    # Filtrar los datos por negocio
     df_filtrado = df[df["NEGOCIO"] == negocio]
+
+    # Filtrar por plazo de meses o agrupar todos los plazos
     if plazo_meses != "Todos":
         df_filtrado = df_filtrado[df_filtrado["PLAZO MESES"] == plazo_meses]
-    
-    # Filtra por el umbral de CARTERA CAPITAL TOTAL
+    else:
+        # Agrupar los datos cuando se selecciona "Todos"
+        columnas_agrupacion = ['DEPARTAMENTO / PRODUCTO']
+
+        # Verificar si "MARGEN" existe y reemplazar valores nulos con 0
+        df_filtrado['MARGEN'] = df_filtrado['MARGEN'].fillna(0)
+        
+        # Aplicar filtros adicionales
+        df_filtrado = df_filtrado[df_filtrado['%USGAAP 90 PONDERADO'] >= 0.3]
+        df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] > 0]
+        df_filtrado = df_filtrado[df_filtrado["TASA"] == "CON TASA"]
+        df_filtrado = df_filtrado[~df_filtrado["ID DEPTO"].astype(str).str.match(r"^6\\d{4}$")]
+
+        # Agrupar los datos y calcular promedios ponderados
+        df_filtrado = (
+            df_filtrado.groupby(columnas_agrupacion)
+            .apply(lambda x: pd.Series({
+                'CARTERA CAPITAL TOTAL': x['CARTERA CAPITAL TOTAL'].sum(),
+                'TASA ACTIVA PONDERADA': (x['TASA ACTIVA PONDERADA'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum(),
+                '$ USGAAP 60 TOTAL': x['$ USGAAP 60 TOTAL'].sum(),
+                '$ USGAAP 90 TOTAL': x['$ USGAAP 90 TOTAL'].sum(),
+                '%USGAAP 90 PONDERADO': (x['%USGAAP 90 PONDERADO'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum(),
+                'RRR': (x['RRR'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum(),
+                'RRR (con margen)': (x['RRR (con margen)'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum()
+            }))
+            .reset_index(drop=False)
+        )
+
+    # Filtrar los datos por umbral de CARTERA CAPITAL TOTAL
     df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] >= 100000]
     df_filtrado = df_filtrado.dropna(subset=["RRR", "%USGAAP 90 PONDERADO"])
     df_filtrado = df_filtrado[df_filtrado["RRR"] != 0]
     df_filtrado = df_filtrado.sort_values(by='RRR', ascending=False)
-    
+
     # Crear gráfico de barras y línea en plotly
     fig = go.Figure()
-    
+
     # Gráfico de barras para RRR
     fig.add_trace(go.Bar(
         x=df_filtrado['DEPARTAMENTO / PRODUCTO'],
@@ -199,7 +229,7 @@ def crear_grafico_barras_linea(df, negocio, plazo_meses):
         text=[f"{rrr:.1f}x" for rrr in df_filtrado['RRR']],  # Mostrar valores en cada barra
         textposition='outside'
     ))
-    
+
     # Gráfico de línea para %USGAAP 90 PONDERADO
     fig.add_trace(go.Scatter(
         x=df_filtrado['DEPARTAMENTO / PRODUCTO'],
@@ -209,12 +239,12 @@ def crear_grafico_barras_linea(df, negocio, plazo_meses):
         marker=dict(color='red'),
         line=dict(width=2)
     ))
-    
+
     # Configuración del diseño
     fig.update_layout(
         title=f"Gráfico de barras y línea para {negocio} - {plazo_meses} meses" if plazo_meses != "Todos" else f"Gráfico de barras y línea para {negocio} - Todos los periodos",
         xaxis_title="Departamento / Producto",
-        margin=dict(t=10, b=10),  # Reduce margen superior e inferior
+        margin=dict(t=10, b=10),
         yaxis_title="RRR",
         yaxis2=dict(
             title="%USGAAP 90 PONDERADO",
@@ -224,13 +254,13 @@ def crear_grafico_barras_linea(df, negocio, plazo_meses):
         legend=dict(title="Indicadores"),
         height=700
     )
-    
-    
+
     fig.update_traces(textfont_size=10)
     fig.update_xaxes(tickangle=80)
-    
+
     # Mostrar el gráfico en Streamlit
     st.plotly_chart(fig)
+
 
 
 
