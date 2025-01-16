@@ -56,6 +56,13 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
         # Asegurarte de que "MARGEN" exista
         df_filtrado['MARGEN'] = df_filtrado['MARGEN'].fillna(0)
         df_filtrado = df_filtrado[df_filtrado['%USGAAP 90 PONDERADO'] >= 0.3]
+  
+            # Filtrar por el umbral de CARTERA CAPITAL TOTAL y condiciones adicionales
+        df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] >= 550000]
+        df_filtrado = df_filtrado[df_filtrado["TASA"] == "CON TASA"]
+        df_filtrado = df_filtrado[~df_filtrado["ID DEPTO"].astype(str).str.match(r"^6\d{4}$")]
+        df_filtrado = df_filtrado.dropna(subset=[eje_x] + ejes_y)
+        df_filtrado = df_filtrado[(df_filtrado[eje_x] != 0)] 
         
         # Agrupación y cálculo
         df_filtrado = (
@@ -72,12 +79,7 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
             .reset_index(drop=False)
         )
            
-    # Filtrar por el umbral de CARTERA CAPITAL TOTAL y condiciones adicionales
-    df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] >= 550000]
-    df_filtrado = df_filtrado[df_filtrado["TASA"] == "CON TASA"]
-    df_filtrado = df_filtrado[~df_filtrado["ID DEPTO"].astype(str).str.match(r"^6\d{4}$")]
-    df_filtrado = df_filtrado.dropna(subset=[eje_x] + ejes_y)
-    df_filtrado = df_filtrado[(df_filtrado[eje_x] != 0)]
+
     
     # Crear gráfico de dispersión interactivo con múltiples trazas
     fig = go.Figure()
