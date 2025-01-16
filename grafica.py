@@ -72,6 +72,7 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
                 'TASA ACTIVA PONDERADA': (x['TASA ACTIVA PONDERADA'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum(),
                 '$ USGAAP 60 TOTAL': x['$ USGAAP 60 TOTAL'].sum(),
                 '$ USGAAP 90 TOTAL': x['$ USGAAP 90 TOTAL'].sum(),
+                '%USGAAP 60 PONDERADO': (x['%USGAAP 60 PONDERADO'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum(),
                 '%USGAAP 90 PONDERADO': (x['%USGAAP 90 PONDERADO'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum(),
                 'RRR': (x['RRR'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum(),
                 'RRR (con margen)': (x['RRR (con margen)'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum()
@@ -204,6 +205,7 @@ def crear_grafico_barras_linea(df, negocio, plazo_meses):
                 'TASA ACTIVA PONDERADA': (x['TASA ACTIVA PONDERADA'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum(),
                 '$ USGAAP 60 TOTAL': x['$ USGAAP 60 TOTAL'].sum(),
                 '$ USGAAP 90 TOTAL': x['$ USGAAP 90 TOTAL'].sum(),
+                '%USGAAP 60 PONDERADO': (x['%USGAAP 60 PONDERADO'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum(),
                 '%USGAAP 90 PONDERADO': (x['%USGAAP 90 PONDERADO'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum(),
                 'RRR': (x['RRR'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum(),
                 'RRR (con margen)': (x['RRR (con margen)'] * x['CARTERA CAPITAL TOTAL']).sum() / x['CARTERA CAPITAL TOTAL'].sum()
@@ -344,7 +346,7 @@ with col_filtros:
         departamento_disp = departamentos_seleccionados
 
     # Selección de ejes
-    opciones_columnas = ["%USGAAP 90 PONDERADO", "RRR", "RRR (con margen)", "MARGEN", "TASA ACTIVA PONDERADA"]
+    opciones_columnas = ["%USGAAP 90 PONDERADO", "%USGAAP 60 PONDERADO", "RRR", "RRR (con margen)", "MARGEN", "TASA ACTIVA PONDERADA"]
     eje_x = st.selectbox(
         "Selecciona la variable para el Eje X:",
         opciones_columnas
