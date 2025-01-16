@@ -58,7 +58,7 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
         df_filtrado = df_filtrado[df_filtrado['%USGAAP 90 PONDERADO'] >= 0.3]
   
             # Filtrar por el umbral de CARTERA CAPITAL TOTAL y condiciones adicionales
-        df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] >= 550000]
+        df_filtrado = df_filtrado[df_filtrado["CARTERA CAPITAL TOTAL"] >= 100000]
         df_filtrado = df_filtrado[df_filtrado["TASA"] == "CON TASA"]
         df_filtrado = df_filtrado[~df_filtrado["ID DEPTO"].astype(str).str.match(r"^6\d{4}$")]
         df_filtrado = df_filtrado.dropna(subset=[eje_x] + ejes_y)
