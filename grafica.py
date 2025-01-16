@@ -98,21 +98,28 @@ def crear_grafico_dispersión_multiple(hojas_seleccionadas, negocios_seleccionad
         lambda row: f"{eje_x}: {row[eje_x]:,.2f}<br>{eje_y}: {row[eje_y]:,.2f}",
         axis=1)
                 )
-            #"Plazo Meses: " + df_filtrado_var["PLAZO MESES"].astype(str)
+            # Calcular el rango de valores para CARTERA CAPITAL TOTAL
+            min_size = 5
+            max_size = 50
+            
+            # Normalizar el tamaño de los círculos entre min_size y max_size
+            df_filtrado_var['scaled_size'] = (
+                (df_filtrado_var['CARTERA CAPITAL TOTAL'] - df_filtrado_var['CARTERA CAPITAL TOTAL'].min()) /
+                (df_filtrado_var['CARTERA CAPITAL TOTAL'].max() - df_filtrado_var['CARTERA CAPITAL TOTAL'].min())
+            ) * (max_size - min_size) + min_size
+            
+            # Usar el tamaño escalado para los marcadores
             fig.add_trace(go.Scatter(
                 x=df_filtrado_var[eje_x],
                 y=df_filtrado_var[eje_y],
                 mode='markers+text',
                 hovertext=hover_text,  # Agregar el texto para hover
-                marker=dict(size=df_filtrado_var["CARTERA CAPITAL TOTAL"] / 10000000, opacity=1, color=color, line=dict(width=1, color='DarkSlateGrey',
-                cmin=100000,                                                                                                         
-                )),
+                marker=dict(size=df_filtrado_var['scaled_size'], opacity=1, color=color, line=dict(width=1, color='DarkSlateGrey')),
                 text=df_filtrado_var["DEPARTAMENTO / PRODUCTO"],
                 name=f"{negocio} - {eje_y}",  # Nombre del eje Y actual incluyendo el negocio
                 textfont=dict(size=6),
                 textposition='middle right',
                 showlegend=False  # Mantener la entrada en la leyenda
-
             ))
            # Crear un trace adicional con tamaño fijo SOLO para la leyenda
             fig.add_trace(go.Scatter(
