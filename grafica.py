@@ -363,7 +363,7 @@ with col_graficos:
         st.warning("Por favor, selecciona al menos una variable para el eje Y.")
           
 # Widgets para el gráfico de barras y línea
-st.header("Gráfico de Barras y Línea")
+#st.header("Gráfico de Barras y Línea")
 hoja_seleccionada_barras = st.selectbox("Selecciona la hoja:", list(dfs.keys()))
 
 # Carga directamente el DataFrame sin usar pd.concat
