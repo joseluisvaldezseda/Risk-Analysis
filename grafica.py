@@ -242,7 +242,7 @@ def crear_grafico_barras_linea(df, negocio, plazo_meses):
 
     # Configuración del diseño
     fig.update_layout(
-        title=f"Gráfico de barras y línea para {negocio} - {plazo_meses} meses" if plazo_meses != "Todos" else f"Gráfico de barras y línea para {negocio} - Todos los periodos",
+        #title=f"Gráfico de barras y línea para {negocio} - {plazo_meses} meses" if plazo_meses != "Todos" else f"Gráfico de barras y línea para {negocio} - Todos los periodos",
         xaxis_title="Departamento / Producto",
         margin=dict(t=10, b=10),
         yaxis_title="RRR",
