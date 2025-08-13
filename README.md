@@ -81,4 +81,3 @@ streamlit run grafica.py
 ```
 
 ---
-This README is written in Markdown and is ready to be used on platforms like GitHub, GitLab, or documentation generators.
